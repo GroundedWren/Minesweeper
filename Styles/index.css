@@ -27,12 +27,107 @@ body {
 
 main {
 	flex-grow: 1;
-	min-height: 0;
+	width: 100%;
+	max-width: 1200px;
+	margin-inline: auto;
 }
 
 footer {
 	figure {
 		text-align: center;
 		margin: 5px;
+	}
+}
+
+#fsetMode {
+	display: flex;
+	justify-content: space-between;
+
+	> label {
+		padding-block: 5px;
+		padding-inline: 10px;
+	}
+}
+
+.scroll-container:has(> #tblField) {
+	width: 100%;
+	overflow-x: auto;
+	padding: 5px;
+}
+
+#tblField {
+	table-layout: fixed;
+	width: initial;
+	margin-inline: auto;
+
+	td {
+		padding: 0;
+	}
+
+	button {
+		aspect-ratio: 1 / 1;
+		min-width: 30px;
+		min-height: 30px;
+
+		display: flex;
+		border: none;
+		overflow: clip;
+	}
+}
+
+#secField {
+	&:has(#tblField:not(:focus-within)) {
+		#asiTblField > * {
+			visibility: hidden;
+		}
+	}
+	#asiTblField {
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+		gap: 2px;
+	}
+}
+
+form, article {
+	padding: 4px;
+	border-inline-start: 3px solid var(--accent-color);
+	padding-inline-start: 6px;
+	background-color: var(--background-color-2);
+
+	h1, h2, h3, h4, h5, h6 {
+		margin-block: 0;
+		margin-block-start: -4px;
+		margin-inline-start: -6px;
+		padding-inline: 5px;
+		margin-block-end: 4px;
+		border-radius: 0 10px 10px 0;
+		background-color: var(--accent-color);
+		word-break: keep-all;
+		text-align: start;
+	}
+
+	.footer {
+		width: 100%;
+		margin-top: 4px;
+
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		gap: 5px;
+	}
+}
+
+dialog {
+	border: 1px solid var(--border-color);
+	padding: 0;
+
+	&::backdrop {
+		background-color: var(--background-color-2);
+		opacity: 0.75;
+	}
+
+	> form {
+		border: none;
 	}
 }

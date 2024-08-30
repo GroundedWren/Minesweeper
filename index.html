@@ -31,6 +31,7 @@
 		</div>
 		<div><h1>Minesweeper</h1></div>
 		<div id="mainHeaderRight">
+			<button onclick="document.getElementById('diaNew').showModal()">New Game</button>
 			<label class="text-after">
 				<input id="cbxDarkMode" type="checkbox" oninput="localStorage.setItem('theme', event.target.checked ? 'dark' : 'light')">
 				Dark mode
@@ -38,6 +39,90 @@
 		</div>
 	</header>
 	<main id="mainContent">
+		<section id="secField" aria-labelledby="hField">
+			<h2 id="hField">Minefield</h2>
+			<fieldset id="fsetMode">
+				<legend>Mode</legend>
+				<label class="text-after">
+					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)" value="dig" checked>
+					<gw-icon iconKey="person-digging" title="dig"></gw-icon>
+				</label>
+				<label class="text-after">
+					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)"  value="flag">
+					<gw-icon iconKey="flag" title="Flag"></gw-icon>
+				</label>
+				<label class="text-after">
+					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)"  value="unknown">
+					<gw-icon iconKey="circle-question" title="Unknown"></gw-icon>
+				</label>
+			</fieldset>
+			<gw-shortcuts role="application" aria-describedby="spnDataGrid"
+			code_0="ArrowRight"
+				handler_0="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_0="Move right a column"
+
+				code_1="ArrowLeft"
+				handler_1="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_1="Move left a column"
+
+				code_2="ArrowUp"
+				handler_2="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_2="Move up a row"
+
+				code_3="ArrowDown"
+				handler_3="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_3="Move down a row"
+
+				code_4="PageUp"
+				handler_4="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_4="Move to the top row"
+
+				code_5="PageDown"
+				handler_5="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_5="Move to the bottom row"
+
+				code_6="Home"
+				handler_6="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_6="Move to the first column"
+
+				code_7="End"
+				handler_7="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_7="Move to the last column"
+
+				code_8="Ctrl+Home"
+				handler_8="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_8="Move to the top left square"
+
+				code_9="Ctrl+End"
+				handler_9="GW.Minesweeper.tblFieldOnKbdNav(event)"
+				info_9="Move to the bottom right square"
+
+				code_10="Alt+S"
+				handler_10="GW.Controls.Shortcuts.reportShortcuts(event)"
+				info_10="Displays available shortcuts"
+			>
+				<span id="spnDataGrid" class="hidden">Data Grid.</span>
+				<div class="scroll-container">
+					<table id="tblField"
+						aria-labelledby="hField"
+						tabindex="0"
+						onfocusin="GW.Minesweeper.tblFieldOnFocusIn(event)"
+						data-row="0"
+						data-col="0"
+					>
+						<tbody id="tbodyField"></tbody>
+					</table>
+				</div>
+				<aside id="asiTblField">
+					<gw-icon iconKey="keyboard" title="Keyboard navigation available"></gw-icon>
+					<span class="sr-only">in focus mode</span>
+					<span>(<kbd>Alt</kbd>+<kbd>S</kbd>)</span>
+				</aside>
+				<span id="spnSquareDigLabel" class="hidden">Dig square</span>
+				<span id="spnSquareFlagLabel" class="hidden">Flag as mine</span>
+				<span id="spnSquareUnknownLabel" class="hidden">Mark unknown</span>
+			</gw-shortcuts>
+		</section>
 	</main>
 	<footer>
 		<figure>
@@ -47,5 +132,26 @@
 			<figcaption>Created by Vera in 2024</figcaption>
 		</figure>
 	</footer>
+	<dialog id="diaNew">
+		<form aria-labelledby="hNew" onsubmit="GW.Minesweeper.onNewGame(event); document.getElementById('diaNew').close();">
+			<h2 id="hNew">New Game</h2>
+			<label class="input-vertical">
+				Rows
+				<input id="numRows" type="number" min="0" required autofocus="">
+			</label>
+			<label class="input-vertical">
+				Columns
+				<input id="numCols" type="number" min="0" required>
+			</label>
+			<label class="input-vertical">
+				Mine percent
+				<input id="numMineRate" type="number" min="1" max="99" required>
+			</label>
+			<div class="footer">
+				<button type="submit">Begin</button>
+				<button type="button" onclick="document.getElementById('diaNew').close()">Cancel</button>
+			</div>
+		</form>
+	</dialog>
 </body>
 </html>
