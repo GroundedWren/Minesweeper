@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+	Author: Vera Konigin
+	Site: https://groundedwren.neocities.org
+	Contact: vera@groundedwren.com
+	
+	File Description: A minesweeper game!
+-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<title>Minesweeper</title>
+	
+	<link href="./Styles/variables.css" rel="stylesheet" type="text/css">
+	<link href="./Styles/main.css" rel="stylesheet" type="text/css">
+	
+	<script src="./Scripts/ShortcutsControl.js"></script>
+	<script src="./Scripts/SVGIconControl.js"></script>
+	<script src="./Scripts/ToasterControl.js"></script>
+	
+	<link href="./Styles/index.css" rel="stylesheet" type="text/css">
+	<script src="./Scripts/index.js"></script>
+</head>
+<body>
+	<header id="mainHeader">
+		<div id="mainHeaderLeft">
+			<a class="hide-until-focus full" href="#mainContent">Skip to content</a>
+	  		<noscript><strong>This site may not function properly without JavaScript enabled.</strong></noscript>
+		</div>
+		<div><h1>Minesweeper</h1></div>
+		<div id="mainHeaderRight">
+			<label class="text-after">
+				<input id="cbxDarkMode" type="checkbox" oninput="localStorage.setItem('theme', event.target.checked ? 'dark' : 'light')">
+				Dark mode
+			</label>
+		</div>
+	</header>
+	<main id="mainContent">
+	</main>
+	<footer>
+		<figure>
+			<a href="https://www.groundedwren.com/" target="_blank">
+				<img src="./Img/gw-button.png" alt="Grounded Wren 88x31 Button; white text on a swirling purple, red, and black background">
+			</a>
+			<figcaption>Created by Vera in 2024</figcaption>
+		</figure>
+	</footer>
+</body>
+</html>

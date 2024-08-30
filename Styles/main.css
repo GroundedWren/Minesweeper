@@ -1,0 +1,341 @@
+/*
+Author: Vera Konigin
+Contact: vera@groundedwren.com
+File Description: CSS Reset
+*/
+
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+html, body {
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1900px;
+	
+	word-break: break-word;
+	
+	background-color: var(--background-color);
+	color: var(--text-color);
+}
+html {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 1em;
+}
+body {
+	min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0px;
+}
+
+a {
+	color: var(--link-color);
+	
+	&.full {
+		padding: 4px;
+		border-radius: 20px;
+		background-color: var(--link-background-color);
+	}
+}
+
+.sr-only {
+	position: absolute;
+	left: -99999999px;
+	top: 0px;
+}
+
+.hide-until-focus {
+	position: absolute;
+	left: -99999999px;
+	top: 0px;
+	
+	&:focus {
+		position: revert;
+		left: revert;
+		top: revert;
+	}
+}
+
+.hidden {
+	display: none !important;
+}
+
+:focus-visible, *[tabindex="-1"]:focus {
+	outline-width: 4px !important;
+	outline-color: var(--focus-color) !important;
+	outline-style: solid !important;
+	outline-offset: 1px !important;
+	position: relative !important;
+	z-index: 100 !important;
+}
+
+*[tabindex="-1"]:focus {
+	outline-style: dashed !important;
+}
+
+summary, label, input:is([type="checkbox"], [type="radio"]) {
+	cursor: pointer;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+}
+table {
+	width: 100%;
+}
+caption {
+	font-style: italic;
+}
+thead {
+	border-bottom: 2px solid;
+	text-align: center;
+	font-weight: bold;
+}
+tbody th {
+	text-align: left;
+}
+
+nav.breadcrumb {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 5px;
+	padding: 10px;
+	
+	ol {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		
+		li {
+			display: inline-block;
+			margin-bottom: 4px;
+			
+			+ li::before {
+				display: inline-block;
+				margin: 0 0.25em;
+				transform: rotate(15deg);
+				border-right: 0.1em solid var(--border-color);
+				height: 0.8em;
+				content: "";
+			}
+			
+			a {
+				display: inline-block;
+				
+				&[aria-current="page"] {
+					font-weight: 700;
+					text-decoration: none;
+				}
+			}
+		}
+	}
+}
+
+#mainHeader {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	align-items: center;
+	text-align: center;
+	gap: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--border-color);
+	padding: 5px;
+	
+	#mainHeaderLeft, #mainHeaderRight {
+		width: fit-content;
+	}
+
+	#mainHeaderLeft {
+		justify-self: flex-start;
+	}
+
+	#mainHeaderRight {
+		justify-self: flex-end;
+	}
+}
+@media (max-width: 450px) {
+	#mainHeader {
+		grid-template-columns: 1fr !important;
+		justify-items: center;
+		
+		#mainHeaderLeft, #mainHeaderRight {
+			justify-self: auto;
+		}
+	}
+}
+
+footer {
+	border-top: 1px solid var(--border-color);
+	font-size: 0.9em;
+	background-color: var(--background-color-2);
+	padding: 2px
+}
+
+summary {
+	min-height: auto;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 3px;
+
+	&::marker {
+		content: "";
+	}
+	&::-webkit-details-marker {
+		display: none;
+	}
+	&::before, &::after {
+		content: "";
+		display: inline-block;
+		width: 0.5em;
+		height: 0.5em;
+		transform: rotate(45deg);
+	}
+	&::after {
+		border-top: 2px solid var(--border-color);
+		border-right: 2px solid var(--border-color);
+	}
+	&::before {
+		border-bottom: 2px solid var(--border-color);
+		border-left: 2px solid var(--border-color);
+	}
+}
+details[open] summary {
+	&::after {
+		border-top: none;
+		border-right: none;
+		border-bottom: 2px solid var(--border-color);
+		border-left: 2px solid var(--border-color);
+	}
+	&::before {
+		border-bottom: none;
+		border-left: none;
+		border-top: 2px solid var(--border-color);
+		border-right: 2px solid var(--border-color);
+	}
+}
+[dir="rtl"] summary {
+	&::before, &::after {
+		transform: rotate(225deg);
+	}
+}
+
+:popover-open, dialog {
+	color: var(--text-color);
+	background-color: var(--background-color);
+}
+
+button, input:is([type="button"], [type="submit"], [type="reset"]), input[type="file"]::file-selector-button, select, summary {
+	background-color: var(--button-face-color);
+	color: var(--button-text-color);
+	border: 1px solid var(--link-color);
+	cursor: pointer;
+	min-width: 30px;
+	min-height: 30px;
+}
+
+button[aria-expanded="true"], button[aria-pressed="true"], details[open] summary {
+	background-color: var(--selected-color);
+	font-weight: bold;
+}
+
+:is(button, select, input:is([type="button"], [type="submit"], [type="reset"]))[disabled], input[type="file"][disabled]::file-selector-button {
+	text-decoration: line-through;
+	border: 1px solid var(--border-color);
+	opacity: 0.5;
+}
+
+:is(button, select, input:is([type="button"], [type="submit"], [type="reset"]))[disabled]:hover, input[type="file"][disabled]::file-selector-button:hover {
+	cursor: not-allowed;
+}
+
+input:is([type="text"], [type="password"], [type="number"], [type="email"], [type="date"], [type="time"]), textarea {
+	color: var(--input-text-color);
+	background-color: var(--input-background-color);
+	border: 2px groove var(--border-color);
+}
+
+:is(input:is([type="text"], [type="password"], [type="number"], [type="email"], [type="date"], [type="time"]), textarea, select):invalid {
+	box-shadow: -3px 0px 0px 0px var(--invalid-color);
+	&:focus-within {
+		box-shadow: inset 0px 0px 4px 2px var(--invalid-color), -3px 0px 0px 0px var(--invalid-color);
+	}
+}
+
+textarea {
+	min-height: 15px;
+	min-width: 60px;
+}
+
+mark {
+	background-color: var(--mark-color);
+	color: var(--text-color);
+}
+
+form {
+	button[type="submit"], button:not([type="reset"], [type="button"]), input[type="submit"] {
+		border-width: 2px;
+		font-weight: bold;
+	}
+}
+
+.input-vertical {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+label:not(.input-vertical) {
+	display: inline-flex;
+	align-items: center;
+	&.text-after :is(input, select) {
+		margin-inline-end: 5px;
+	}
+	&:not(.text-after) :is(input, select) {
+		margin-inline-start: 5px;
+	}
+}
+
+label:has(input:checked) {
+	background-color: var(--selected-color);
+}
+
+.tab-control {
+	padding: 5px;
+
+	.tab-list {
+		margin-inline: 0;
+		margin-block-end: 0;
+		
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		gap: 5px;
+		
+		label:has(:checked) {
+		background-color: var(--selected-color);
+		}
+	}
+
+	.tab-panel {
+		display: none;
+		
+		background-color: var(--background-color-2);
+		padding: 5px;
+		border-inline: 1px solid var(--border-color);
+		border-block-end: 1px solid var(--border-color);
+	}
+
+	.description {
+		position: absolute;
+		left: -99999999px;
+		top: 0px;
+	}
+}

@@ -1,0 +1,38 @@
+/*
+Author: Vera Konigin
+Contact: vera@groundedwren.com
+File Description: Index.html styles
+*/
+
+html {
+	height: 100vh;
+}
+
+body {
+	min-height: 100vh;
+	height: 100%;
+	width: 100%;
+	max-width: 1920px;
+	max-height: 1000px;
+
+	display: flex;
+	flex-direction: column;
+}
+
+@media (max-width: 650px) {
+	#mainHeader {
+		grid-template-columns: 0fr 1fr 1fr !important;
+	}
+}
+
+main {
+	flex-grow: 1;
+	min-height: 0;
+}
+
+footer {
+	figure {
+		text-align: center;
+		margin: 5px;
+	}
+}
