@@ -19,9 +19,13 @@ body {
 	flex-direction: column;
 }
 
+body:has(#cbxBigSquares:checked) {
+	--square-size: 40px;
+}
+
 #mainHeaderRight {
 	display: flex;
-	gap: 5px;
+	gap: 7px;
 }
 
 @media (max-width: 650px) {
@@ -70,6 +74,10 @@ footer {
 .scroll-container:has(> #tblField) {
 	width: 100%;
 	overflow-x: auto;
+
+	max-height: 650px;
+	overflow-y: auto;
+
 	padding: 5px;
 }
 
@@ -84,8 +92,8 @@ footer {
 
 	button, .dug-square {
 		aspect-ratio: 1 / 1;
-		min-width: 30px;
-		min-height: 30px;
+		min-width: var(--square-size, 30px);
+		min-height: var(--square-size, 30px);
 
 		display: flex;
 		justify-content: center;

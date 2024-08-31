@@ -31,11 +31,15 @@
 		</div>
 		<div><h1>Minesweeper</h1></div>
 		<div id="mainHeaderRight">
-			<button onclick="document.getElementById('diaNew').showModal()">New Game</button>
 			<label class="text-after">
 				<input id="cbxDarkMode" type="checkbox" oninput="localStorage.setItem('theme', event.target.checked ? 'dark' : 'light')">
 				Dark mode
 			</label>
+			<label class="text-after">
+				<input id="cbxBigSquares" type="checkbox" oninput="localStorage.setItem('use-big-squares', event.target.checked ? 'true' : 'false')">
+				Big squares
+			</label>
+			<button onclick="document.getElementById('diaNew').showModal()">New Game</button>
 		</div>
 	</header>
 	<main id="mainContent">

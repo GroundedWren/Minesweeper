@@ -5,6 +5,8 @@
  
 window.GW = window.GW || {};
 (function Minesweeper(ns) {
+	const SURROUNDING_DELTAS = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+
 	ns.onNewGame = (event) => {
 		event.preventDefault();
 		const elements = event.target.elements;
@@ -23,12 +25,11 @@ window.GW = window.GW || {};
 			}
 		}
 
-		const surroundingDeltas = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 		for(let i = 0; i < numRows; i++) {
 			for(let j = 0; j < numCols; j++) {
 				if(Math.random() <= mineRate) {
 					ns.Data[i][j].Cnt = -1;
-					surroundingDeltas.forEach(deltas => {
+					SURROUNDING_DELTAS.forEach(deltas => {
 						const deltaRow = ns.Data[i + deltas[0]];
 						if(!deltaRow) {return;}
 
@@ -230,13 +231,9 @@ window.GW = window.GW || {};
 			) {
 				ns.Data[coords.row][coords.col].Sts = "dig";
 				if(ns.Data[coords.row][coords.col].Cnt === 0) {
-					for(let i = -1; i <= 1; i++) {
-						for(let j = -1; j <=1; j++) {
-							if((i || j) && (i !== j)) {
-								cellArr.push({row: coords.row + i, col: coords.col + j});
-							}
-						}
-					}
+					SURROUNDING_DELTAS.forEach(
+						deltas => cellArr.push({row: coords.row + deltas[0], col: coords.col + deltas[1]})
+					);
 				}
 			}
 		}
@@ -312,6 +309,9 @@ window.addEventListener("load", () => {
 			cbxDarkMode.checked = window.matchMedia("(prefers-color-scheme: dark)").matches;
 			break;
 	}
+	
+	document.getElementById("cbxBigSquares").checked = localStorage.getItem("use-big-squares") === "true";
+
 	GW.Minesweeper.Data = JSON.parse(localStorage.getItem("data"));
 	if(!GW.Minesweeper.Data) {
 		GW.Minesweeper.generateGameData(10, 10, 0.12);
