@@ -226,14 +226,15 @@ window.GW = window.GW || {};
 			const coords = cellArr.pop();
 			if(ns.Data[coords.row]
 				&& ns.Data[coords.row][coords.col]
-				&& ns.Data[coords.row][coords.col].Cnt === 0
 				&& ns.Data[coords.row][coords.col].Sts !== "dig"
 			) {
 				ns.Data[coords.row][coords.col].Sts = "dig";
-				for(let i = -1; i <= 1; i++) {
-					for(let j = -1; j <=1; j++) {
-						if((i || j) && (i !== j)) {
-							cellArr.push({row: coords.row + i, col: coords.col + j});
+				if(ns.Data[coords.row][coords.col].Cnt === 0) {
+					for(let i = -1; i <= 1; i++) {
+						for(let j = -1; j <=1; j++) {
+							if((i || j) && (i !== j)) {
+								cellArr.push({row: coords.row + i, col: coords.col + j});
+							}
 						}
 					}
 				}
