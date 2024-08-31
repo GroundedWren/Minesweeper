@@ -279,6 +279,16 @@ window.GW = window.GW || {};
 			GW.Controls.Toaster.showToast(mode, {invisible: true});
 		}
 	};
+
+	ns.revealBoard = () => {
+		for(let i = 0; i < ns.Data.length; i++) {
+			for(let j = 0; j < ns.Data[i].length; j++) {
+				ns.Data[i][j].Sts = "dig";
+			}
+		}
+		ns.renderGame();
+		setTimeout(() => GW.Controls.Toaster.showToast("Board revealed!", {invisible: true}), 0);
+	};
 }) (window.GW.Minesweeper = window.GW.Minesweeper || {});
 
 window.addEventListener("load", () => {

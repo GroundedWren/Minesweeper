@@ -194,3 +194,8 @@ dialog {
 #divSunglasses {
 	text-align: center;
 }
+
+#divFieldFooter {
+	display: flex;
+	justify-content: center;
+}
