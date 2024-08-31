@@ -7,6 +7,10 @@ window.GW = window.GW || {};
 (function Minesweeper(ns) {
 	const SURROUNDING_DELTAS = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 
+	/**
+	 * Creates and renders a new game
+	 * @param {SubmitEvent} event 
+	 */
 	ns.onNewGame = (event) => {
 		event.preventDefault();
 		const elements = event.target.elements;
@@ -15,6 +19,12 @@ window.GW = window.GW || {};
 		ns.renderGame();
 	}
 
+	/**
+	 * Sets up the game state
+	 * @param {number} numRows The number of field rows
+	 * @param {number} numCols The number of field columns
+	 * @param {number} mineRate Percentage of squares to have mines
+	 */
 	ns.generateGameData = function generateGameData(numRows, numCols, mineRate) {
 		ns.Data = [];
 
@@ -91,6 +101,10 @@ window.GW = window.GW || {};
 		focusFieldSquare(document.getElementById(`cell-${targetRow}-${targetCol}`));
 	}
 
+	/**
+	 * Handles siting focus in the minefield
+	 * @param {KeyboardEvent} event 
+	 */
 	ns.tblFieldOnFocusIn = (event) => {
 		let focusTarget = event.target;
 		const tblField = document.getElementById("tblField");
@@ -105,6 +119,9 @@ window.GW = window.GW || {};
 		}
 	};
 
+	/**
+	 * Renders the minefield
+	 */
 	ns.renderGame = function renderGame() {
 		const tbodyField = document.getElementById("tbodyField");
 		const hadFocus = tbodyField.matches(":focus-within");
@@ -133,34 +150,11 @@ window.GW = window.GW || {};
 		localStorage.setItem("data", JSON.stringify(GW.Minesweeper.Data));
 	}
 
-	function checkWinstate() {
-		for(let i = 0; i < ns.Data.length; i++) {
-			for(let j = 0; j < ns.Data[i].length; j++) {
-				const square = ns.Data[i][j]
-				if((square.Cnt === -1 && square.Sts !== "flag")
-					|| (square.Cnt !== -1 && square.Sts === "flag")
-				) {
-					document.getElementById("divSunglasses").setAttribute("hidden", "true");
-					return;
-				}
-			}
-		}
-		setTimeout(() => GW.Controls.Toaster.showToast("You won! 😎"), 0);
-		document.getElementById("divSunglasses").removeAttribute("hidden");
-	}
-
-	function focusFieldSquare(tdFocus) {
-		const tblField = document.getElementById("tblField");
-		tblField.querySelectorAll("button, .dug-square").forEach(
-			elem => elem.setAttribute("tabindex", elem.parentElement === tdFocus ? "0" : "-1")
-		);
-		const [_, row, col] = tdFocus.id.split("-");
-		tblField.setAttribute("data-row", row);
-		tblField.setAttribute("data-col", col);
-
-		tdFocus.querySelector("button, .dug-square").focus();
-	}
-
+	/**
+	 * Fetches what the markup for a square should be
+	 * @param {Object} squareData Data about the square
+	 * @returns An HTML string
+	 */
 	function getCellContent(squareData) {
 		const btnOpenTag = `<button data-sts="${squareData.Sts}" tabindex="-1" onclick="GW.Minesweeper.onSquareActivate(event)">`;
 		switch(squareData.Sts) {
@@ -199,6 +193,45 @@ window.GW = window.GW || {};
 		}
 	}
 
+	/**
+	 * Updates the game to indicate if the player won
+	 */
+	function checkWinstate() {
+		for(let i = 0; i < ns.Data.length; i++) {
+			for(let j = 0; j < ns.Data[i].length; j++) {
+				const square = ns.Data[i][j]
+				if((square.Cnt === -1 && square.Sts !== "flag")
+					|| (square.Cnt !== -1 && square.Sts === "flag")
+				) {
+					document.getElementById("divSunglasses").setAttribute("hidden", "true");
+					return;
+				}
+			}
+		}
+		setTimeout(() => GW.Controls.Toaster.showToast("You won! 😎"), 0);
+		document.getElementById("divSunglasses").removeAttribute("hidden");
+	}
+
+	/**
+	 * Puts focus on the specified square
+	 * @param {HTMLElement} tdFocus table cell getting focus
+	 */
+	function focusFieldSquare(tdFocus) {
+		const tblField = document.getElementById("tblField");
+		tblField.querySelectorAll("button, .dug-square").forEach(
+			elem => elem.setAttribute("tabindex", elem.parentElement === tdFocus ? "0" : "-1")
+		);
+		const [_, row, col] = tdFocus.id.split("-");
+		tblField.setAttribute("data-row", row);
+		tblField.setAttribute("data-col", col);
+
+		tdFocus.querySelector("button, .dug-square").focus();
+	}
+
+	/**
+	 * Handles the user activating a square
+	 * @param {Event} event 
+	 */
 	ns.onSquareActivate = (event) => {
 		let tdEl = event.target;
 		while(tdEl.tagName !== "TD") {
@@ -221,6 +254,11 @@ window.GW = window.GW || {};
 		setTimeout(() => ns.renderGame(), 0);
 	};
 
+	/**
+	 * Auto-reveals surrounding squares as appropriate
+	 * @param {number} row Starting square's row
+	 * @param {number} col Starting square's col
+	 */
 	function digAround(row, col) {
 		const cellArr = [{row: row, col: col }];
 		while(cellArr.length) {
@@ -239,10 +277,17 @@ window.GW = window.GW || {};
 		}
 	}
 
+	/**
+	 * Updates the game based on the currently selected action mode
+	 * @param {Event} _event 
+	 */
 	ns.onModeChange = (_event) => {
 		updateButtons();
 	};
 
+	/**
+	 * Updates the minefield buttons for the current action mode
+	 */
 	function updateButtons() {
 		const curBtnLblEl = getCurBtnLblEl();
 		document.querySelectorAll("#tblField button").forEach(btn => {
@@ -260,6 +305,10 @@ window.GW = window.GW || {};
 		});
 	}
 
+	/**
+	 * Finds what element should label minefield butttons based on the current action mode
+	 * @returns An element id
+	 */
 	function getCurBtnLblEl() {
 		switch(getCurAction()) {
 			case "dig":
@@ -273,10 +322,18 @@ window.GW = window.GW || {};
 		return ""
 	}
 
+	/**
+	 * The current action mode
+	 * @returns string
+	 */
 	function getCurAction() {
 		return document.querySelector("[name='clickMode']:checked").value;
 	}
 
+	/**
+	 * Updates the current action mode
+	 * @param {Event} mode 
+	 */
 	ns.selectMode = (mode) => {
 		document.querySelector(`[name="clickMode"][value="${mode}"]`).click();
 		if(!document.getElementById("tblField").querySelector("button:focus-within")) {
@@ -284,6 +341,9 @@ window.GW = window.GW || {};
 		}
 	};
 
+	/**
+	 * Digs all squares
+	 */
 	ns.revealBoard = () => {
 		for(let i = 0; i < ns.Data.length; i++) {
 			for(let j = 0; j < ns.Data[i].length; j++) {
