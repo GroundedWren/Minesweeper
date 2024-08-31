@@ -25,6 +25,17 @@ body {
 	}
 }
 
+@media (max-width: 450px) {
+	#mainHeader {
+		grid-template-columns: 1fr !important;
+		justify-items: center;
+		
+		#mainHeaderLeft, #mainHeaderRight {
+			justify-self: auto;
+		}
+	}
+}
+
 main {
 	flex-grow: 1;
 	width: 100%;
@@ -42,10 +53,12 @@ footer {
 #fsetMode {
 	display: flex;
 	justify-content: space-between;
+	max-width: 600px;
+	margin-inline: auto;
 
 	> label {
 		padding-block: 5px;
-		padding-inline: 10px;
+		padding-inline-end: 10px;
 	}
 }
 
@@ -64,12 +77,15 @@ footer {
 		padding: 0;
 	}
 
-	button {
+	button, .dug-square {
 		aspect-ratio: 1 / 1;
 		min-width: 30px;
 		min-height: 30px;
 
 		display: flex;
+		justify-content: center;
+		align-items: center;
+
 		border: none;
 		overflow: clip;
 	}

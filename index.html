@@ -39,8 +39,7 @@
 		</div>
 	</header>
 	<main id="mainContent">
-		<section id="secField" aria-labelledby="hField">
-			<h2 id="hField">Minefield</h2>
+		<section id="secField">
 			<fieldset id="fsetMode">
 				<legend>Mode</legend>
 				<label class="text-after">
@@ -104,7 +103,8 @@
 				<span id="spnDataGrid" class="hidden">Data Grid.</span>
 				<div class="scroll-container">
 					<table id="tblField"
-						aria-labelledby="hField"
+						aria-labelledby="spnFieldLabel"
+						role="grid"
 						tabindex="0"
 						onfocusin="GW.Minesweeper.tblFieldOnFocusIn(event)"
 						data-row="0"
@@ -121,6 +121,7 @@
 				<span id="spnSquareDigLabel" class="hidden">Dig square</span>
 				<span id="spnSquareFlagLabel" class="hidden">Flag as mine</span>
 				<span id="spnSquareUnknownLabel" class="hidden">Mark unknown</span>
+				<span id="spnFieldLabel" class="hidden">Minefield</span>
 			</gw-shortcuts>
 		</section>
 	</main>

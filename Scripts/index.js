@@ -42,20 +42,65 @@ window.GW = window.GW || {};
 		}
 	}
 
+	/**
+	 * Performs keyboard navigation in the field
+	 * @param {KeyboardEvent} event Navigation event
+	 */
 	ns.tblFieldOnKbdNav = (event) => {
-		//TODO
-	};
+		const maxRowPos = ns.Data.length - 1;
+		const maxColPos = ns.Data[0].length - 1;
+
+		const tblField = document.getElementById("tblField");
+		let targetRow = parseInt(tblField.getAttribute("data-row"));
+		let targetCol = parseInt(tblField.getAttribute("data-col"));
+		switch(event.key) {
+			case "ArrowRight":
+				targetCol += 1;
+				break;
+			case "ArrowLeft":
+				targetCol -= 1;
+				break;
+			case "ArrowUp":
+				targetRow -= 1;
+				break;
+			case "ArrowDown":
+				targetRow += 1;
+				break;
+			case "PageUp":
+				targetRow = 0;
+				break;
+			case "PageDown":
+				targetRow = maxRowPos;
+				break;
+			case "Home":
+				targetCol = 0;
+				if(event.ctrlKey) {
+					targetRow = 0;
+				}
+				break;
+			case "End":
+				targetCol = maxColPos;
+				if(event.ctrlKey) {
+					targetRow = maxRowPos;
+				}
+				break;
+		}
+		targetRow = Math.max(Math.min(targetRow, maxRowPos), 0);
+		targetCol = Math.max(Math.min(targetCol, maxColPos), 0);
+		focusFieldSquare(document.getElementById(`cell-${targetRow}-${targetCol}`));
+	}
 
 	ns.tblFieldOnFocusIn = (event) => {
 		let focusTarget = event.target;
 		const tblField = document.getElementById("tblField");
 		if(focusTarget === tblField) {
-			const button = tblField.querySelector(
-				`#cell-${tblField.getAttribute("data-row")}${tblField.getAttribute("data-column")} button`
-			);
+			focusFieldSquare(tblField.querySelector(
+				`#cell-${tblField.getAttribute("data-row")}-${tblField.getAttribute("data-col")}`
+			));
+			tblField.setAttribute("tabindex", "-1");
 		}
-		else if(event.target.tagName === "BUTTON") {
-			focusFieldButton(event.target);
+		else {
+			focusFieldSquare(event.target.parentElement);
 		}
 	};
 
@@ -73,21 +118,26 @@ window.GW = window.GW || {};
 		updateButtons();
 		if(hadFocus) {
 			const tblField = document.getElementById("tblField");
-			const focusBtn = tblField.querySelector(
-				`#cell-${tblField.getAttribute("data-row")}${tblField.getAttribute("data-column")} button`
+			const tdFocus = tblField.querySelector(
+				`#cell-${tblField.getAttribute("data-row")}-${tblField.getAttribute("data-col")}`
 			);
-			focusFieldButton(focusBtn);
+			focusFieldSquare(tdFocus);
+		}
+		else {
+			document.getElementById("tblField").setAttribute("tabindex", "0");
 		}
 	}
 
-	function focusFieldButton(focusButton) { //KJA TODO this needs to be more than buttons
+	function focusFieldSquare(tdFocus) {
 		const tblField = document.getElementById("tblField");
-		tblField.querySelectorAll("button").forEach(
-			button => button.setAttribute("tabindex", button === focusButton ? "0" : "-1")
+		tblField.querySelectorAll("button, .dug-square").forEach(
+			elem => elem.setAttribute("tabindex", elem.parentElement === tdFocus ? "0" : "-1")
 		);
-		const [_, row, col] = focusButton.parentElement.id.split("-");
+		const [_, row, col] = tdFocus.id.split("-");
 		tblField.setAttribute("data-row", row);
 		tblField.setAttribute("data-col", col);
+
+		tdFocus.querySelector("button, .dug-square").focus();
 	}
 
 	function getCellContent(squareData) {
@@ -109,8 +159,8 @@ window.GW = window.GW || {};
 			}
 			case "dig": {
 				return squareData.Cnt < 0 
-					? `<gw-icon iconKey="bomb" title="mine"></gw-icon>` 
-					: `<span data-Cnt="${squareData.Cnt}">${squareData.Cnt}</span>`;
+					? `<gw-icon iconKey="bomb" title="mine" class="dug-square" tabindex="-1"></gw-icon>` 
+					: `<div data-Cnt="${squareData.Cnt}" class="dug-square" tabindex="-1">${squareData.Cnt}</div>`;
 			}
 		}
 	}
