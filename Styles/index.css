@@ -96,7 +96,7 @@ footer {
 	}
 
 	.dug-square {
-		&[data-Cnt="0"] {
+		&[data-Cnt="0"] > * {
 			opacity: 0;
 		}
 		&[data-Cnt="1"] {
