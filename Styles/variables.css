@@ -22,6 +22,23 @@ File Description: CSS Variables
 	--mark-color: #D2FCC5;
 	--accent-color: #C0DBB0;
 	--invalid-color: #5C01D8;
+
+	--sqr-1-bkg-color: #FFFFFF;
+	--sqr-1-color: #000000;
+	--sqr-2-bkg-color: #dfdfff;
+	--sqr-2-color: #0000ff;
+	--sqr-3-bkg-color: #ddffdd;
+	--sqr-3-color: #008000;
+	--sqr-4-bkg-color: #eeddff;
+	--sqr-4-color: #400080;
+	--sqr-5-bkg-color: #80ffff;
+	--sqr-5-color: #000080;
+	--sqr-6-bkg-color: #80ff80;
+	--sqr-6-color: #004000;
+	--sqr-7-bkg-color: #ff80c0;
+	--sqr-7-color: #400040;
+	--sqr-8-bkg-color: #660000;
+	--sqr-8-color: #ff9494;
 }
 
 @media not print {
@@ -43,5 +60,22 @@ File Description: CSS Variables
 		--mark-color: #005C08;
 		--accent-color: #8D4A95;
 		--invalid-color: #a35ffe;
+
+		--sqr-1-bkg-color: #000000;
+		--sqr-1-color: #ffffff;
+		--sqr-2-bkg-color: #0000ff;
+		--sqr-2-color: #dfdfff;
+		--sqr-3-bkg-color: #008000;
+		--sqr-3-color: #ddffdd;
+		--sqr-4-bkg-color: #400080;
+		--sqr-4-color: #eeddff;
+		--sqr-5-bkg-color: #000080;
+		--sqr-5-color: #80ffff;
+		--sqr-6-bkg-color: #004000;
+		--sqr-6-color: #80ff80;
+		--sqr-7-bkg-color: #400040;
+		--sqr-7-color: #ff80c0;
+		--sqr-8-bkg-color: #ff9494;
+		--sqr-8-color: #660000;
 	}
 }

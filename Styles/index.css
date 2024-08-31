@@ -94,6 +94,44 @@ footer {
 		border: none;
 		overflow: clip;
 	}
+
+	.dug-square {
+		&[data-Cnt="0"] {
+			opacity: 0;
+		}
+		&[data-Cnt="1"] {
+			background-color: var(--sqr-1-bkg-color);
+			color: var(--sqr-1-color);
+		}
+		&[data-Cnt="2"] {
+			background-color: var(--sqr-2-bkg-color);
+			color: var(--sqr-2-color);
+		}
+		&[data-Cnt="3"] {
+			background-color: var(--sqr-3-bkg-color);
+			color: var(--sqr-3-color);
+		}
+		&[data-Cnt="4"] {
+			background-color: var(--sqr-4-bkg-color);
+			color: var(--sqr-4-color);
+		}
+		&[data-Cnt="5"] {
+			background-color: var(--sqr-5-bkg-color);
+			color: var(--sqr-5-color);
+		}
+		&[data-Cnt="6"] {
+			background-color: var(--sqr-6-bkg-color);
+			color: var(--sqr-6-color);
+		}
+		&[data-Cnt="7"] {
+			background-color: var(--sqr-7-bkg-color);
+			color: var(--sqr-7-color);
+		}
+		&[data-Cnt="8"] {
+			background-color: var(--sqr-8-bkg-color);
+			color: var(--sqr-8-color);
+		}
+	}
 }
 
 #secField {

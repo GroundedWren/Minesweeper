@@ -154,7 +154,7 @@ window.GW = window.GW || {};
 			}
 			case "unknown": {
 				return `${btnOpenTag}
-					<gw-icon iconKey="flag" title="Unknown"></gw-icon>
+					<gw-icon iconKey="circle-question" title="Unknown"></gw-icon>
 				</button>`
 			}
 			case "dig": {
@@ -167,9 +167,36 @@ window.GW = window.GW || {};
 
 	ns.onSquareActivate = (event) => {
 		const [_, row, col] = event.target.parentElement.id.split("-");
-		ns.Data[row][col].Sts = getCurAction();
+		const action = getCurAction();
+
+		if(action === "dig") {
+			digAround(parseInt(row), parseInt(col))
+		}
+		ns.Data[row][col].Sts = action;
+
 		setTimeout(() => ns.renderGame(), 0);
 	};
+
+	function digAround(row, col) {
+		const cellArr = [{row: row, col: col }];
+		while(cellArr.length) {
+			const coords = cellArr.pop();
+			if(ns.Data[coords.row]
+				&& ns.Data[coords.row][coords.col]
+				&& ns.Data[coords.row][coords.col].Cnt === 0
+				&& ns.Data[coords.row][coords.col].Sts !== "dig"
+			) {
+				ns.Data[coords.row][coords.col].Sts = "dig";
+				for(let i = -1; i <= 1; i++) {
+					for(let j = -1; j <=1; j++) {
+						if(i || j) {
+							cellArr.push({row: coords.row + i, col: coords.col + j});
+						}
+					}
+				}
+			}
+		}
+	}
 
 	ns.onModeChange = (_event) => {
 		updateButtons();
@@ -208,6 +235,10 @@ window.GW = window.GW || {};
 	function getCurAction() {
 		return document.querySelector("[name='clickMode']:checked").value;
 	}
+
+	ns.selectMode = (mode) => {
+		document.querySelector(`[name="clickMode"][value="${mode}"]`).click();
+	};
 }) (window.GW.Minesweeper = window.GW.Minesweeper || {});
 
 window.addEventListener("load", () => {

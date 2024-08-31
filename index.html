@@ -47,11 +47,11 @@
 					<gw-icon iconKey="person-digging" title="dig"></gw-icon>
 				</label>
 				<label class="text-after">
-					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)"  value="flag">
+					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)" value="flag">
 					<gw-icon iconKey="flag" title="Flag"></gw-icon>
 				</label>
 				<label class="text-after">
-					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)"  value="unknown">
+					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)" value="unknown">
 					<gw-icon iconKey="circle-question" title="Unknown"></gw-icon>
 				</label>
 			</fieldset>
@@ -99,6 +99,18 @@
 				code_10="Alt+S"
 				handler_10="GW.Controls.Shortcuts.reportShortcuts(event)"
 				info_10="Displays available shortcuts"
+
+				code_11="1"
+				handler_11="GW.Minesweeper.selectMode('dig')"
+				info_11="Switches to dig mode"
+
+				code_12="2"
+				handler_12="GW.Minesweeper.selectMode('flag')"
+				info_12="Switches to dig mode"
+
+				code_13="3"
+				handler_13="GW.Minesweeper.selectMode('unknown')"
+				info_13="Switches to dig mode"
 			>
 				<span id="spnDataGrid" class="hidden">Data Grid.</span>
 				<div class="scroll-container">
