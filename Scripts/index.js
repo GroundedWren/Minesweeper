@@ -126,6 +126,24 @@ window.GW = window.GW || {};
 		else {
 			document.getElementById("tblField").setAttribute("tabindex", "0");
 		}
+
+		checkWinstate();
+	}
+
+	function checkWinstate() {
+		for(let i = 0; i < ns.Data.length; i++) {
+			for(let j = 0; j < ns.Data[i].length; j++) {
+				const square = ns.Data[i][j]
+				if((square.Cnt === -1 && square.Sts !== "flag")
+					|| (square.Cnt !== -1 && square.Sts === "flag")
+				) {
+					document.getElementById("divSunglasses").setAttribute("hidden", "true");
+					return;
+				}
+			}
+		}
+		setTimeout(() => GW.Controls.Toaster.showToast("You won! 😎"), 0);
+		document.getElementById("divSunglasses").removeAttribute("hidden");
 	}
 
 	function focusFieldSquare(tdFocus) {
@@ -159,8 +177,21 @@ window.GW = window.GW || {};
 			}
 			case "dig": {
 				return squareData.Cnt < 0 
-					? `<gw-icon iconKey="bomb" title="mine" class="dug-square" tabindex="-1"></gw-icon>` 
-					: `<div data-Cnt="${squareData.Cnt}" class="dug-square" tabindex="-1">${squareData.Cnt}</div>`;
+					? `<gw-icon
+						iconKey="bomb"
+						title="mine"
+						class="dug-square"
+						tabindex="-1"
+						role="figure"
+						aria-describedby="spnDugSquareLabel spnMineLabel"
+					></gw-icon>` 
+					: `<div
+						data-Cnt="${squareData.Cnt}"
+						class="dug-square"
+						tabindex="-1"
+						role="figure"
+						aria-labelledby="spnDugSquareLabel spnFindings${squareData.Id} spnMinesNearbyLabel"
+					><span id="spnFindings${squareData.Id}">${squareData.Cnt}<span></div>`;
 			}
 		}
 	}
@@ -170,9 +201,15 @@ window.GW = window.GW || {};
 		const action = getCurAction();
 
 		if(action === "dig") {
-			digAround(parseInt(row), parseInt(col))
+			digAround(parseInt(row), parseInt(col));
+			ns.Data[row][col].Sts = action;
 		}
-		ns.Data[row][col].Sts = action;
+		else if(ns.Data[row][col].Sts === action){
+			ns.Data[row][col].Sts = null;
+		}
+		else {
+			ns.Data[row][col].Sts = action;
+		}
 
 		setTimeout(() => ns.renderGame(), 0);
 	};
@@ -189,7 +226,7 @@ window.GW = window.GW || {};
 				ns.Data[coords.row][coords.col].Sts = "dig";
 				for(let i = -1; i <= 1; i++) {
 					for(let j = -1; j <=1; j++) {
-						if(i || j) {
+						if((i || j) && (i !== j)) {
 							cellArr.push({row: coords.row + i, col: coords.col + j});
 						}
 					}
@@ -207,14 +244,14 @@ window.GW = window.GW || {};
 		document.querySelectorAll("#tblField button").forEach(btn => {
 			btn.setAttribute("aria-labelledby", curBtnLblEl);
 			switch(curBtnLblEl) {
-				case "flag":
+				case "spnSquareFlagLabel":
 					btn.setAttribute("aria-pressed", btn.getAttribute("data-sts") === "flag");
 					break;
-				case "unknown":
+				case "spnSquareUnknownLabel":
 					btn.setAttribute("aria-pressed", btn.getAttribute("data-sts") === "unknown");
 					break;
 				default:
-					btn.setAttribute("aria-pressed", "false");
+					btn.removeAttribute("aria-pressed");
 			}
 		});
 	}
@@ -238,6 +275,9 @@ window.GW = window.GW || {};
 
 	ns.selectMode = (mode) => {
 		document.querySelector(`[name="clickMode"][value="${mode}"]`).click();
+		if(!document.getElementById("tblField").querySelector("button:focus-within")) {
+			GW.Controls.Toaster.showToast(mode, {invisible: true});
+		}
 	};
 }) (window.GW.Minesweeper = window.GW.Minesweeper || {});
 
@@ -257,7 +297,7 @@ window.addEventListener("load", () => {
 	}
 	GW.Minesweeper.Data = localStorage.getItem("data");
 	if(!GW.Minesweeper.Data) {
-		GW.Minesweeper.generateGameData(20, 20, 0.15);
+		GW.Minesweeper.generateGameData(10, 10, 0.12);
 	}
 	GW.Minesweeper.renderGame();
 });

@@ -97,7 +97,7 @@ window.GW.Controls = window.GW.Controls || {};
 
 		const toaster = document.getElementById(ns.TOASTER_ASIDE_ID);
 
-		toaster.insertAdjacentHTML("afterbegin", `<article id="${toastId}">
+		toaster.insertAdjacentHTML("afterbegin", `<article id="${toastId}" style="${opts.invisible ? "opacity: 0;" : ""}">
 			${opts.omitPreamble
 				? "" 
 				: `<span id="${toastId}-preamble" class="preamble">${opts.persist ? "Popup" : "Toast"} message: </span>`

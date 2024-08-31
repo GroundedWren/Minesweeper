@@ -40,6 +40,7 @@
 	</header>
 	<main id="mainContent">
 		<section id="secField">
+			<div id="divSunglasses" hidden>😎</div>
 			<fieldset id="fsetMode">
 				<legend>Mode</legend>
 				<label class="text-after">
@@ -106,11 +107,11 @@
 
 				code_12="2"
 				handler_12="GW.Minesweeper.selectMode('flag')"
-				info_12="Switches to dig mode"
+				info_12="Switches to flag mode"
 
 				code_13="3"
 				handler_13="GW.Minesweeper.selectMode('unknown')"
-				info_13="Switches to dig mode"
+				info_13="Switches to mark unknown mode"
 			>
 				<span id="spnDataGrid" class="hidden">Data Grid.</span>
 				<div class="scroll-container">
@@ -133,7 +134,10 @@
 				<span id="spnSquareDigLabel" class="hidden">Dig square</span>
 				<span id="spnSquareFlagLabel" class="hidden">Flag as mine</span>
 				<span id="spnSquareUnknownLabel" class="hidden">Mark unknown</span>
+				<span id="spnDugSquareLabel" class="hidden">Dug square</span>
+				<span id="spnMinesNearbyLabel" class="hidden">Nearby</span>
 				<span id="spnFieldLabel" class="hidden">Minefield</span>
+				<span id="spnMineLabel" class="hidden">Mine. Boom!</span>
 			</gw-shortcuts>
 		</section>
 	</main>
@@ -150,15 +154,15 @@
 			<h2 id="hNew">New Game</h2>
 			<label class="input-vertical">
 				Rows
-				<input id="numRows" type="number" min="0" required autofocus="">
+				<input id="numRows" type="number" min="0" value="10" required autofocus="">
 			</label>
 			<label class="input-vertical">
 				Columns
-				<input id="numCols" type="number" min="0" required>
+				<input id="numCols" type="number" min="0" value="10" required>
 			</label>
 			<label class="input-vertical">
 				Mine percent
-				<input id="numMineRate" type="number" min="1" max="99" required>
+				<input id="numMineRate" type="number" min="1" max="99" value="12" required>
 			</label>
 			<div class="footer">
 				<button type="submit">Begin</button>
