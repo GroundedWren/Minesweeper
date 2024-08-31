@@ -199,7 +199,11 @@ window.GW = window.GW || {};
 	}
 
 	ns.onSquareActivate = (event) => {
-		const [_, row, col] = event.target.parentElement.id.split("-");
+		let tdEl = event.target;
+		while(tdEl.tagName !== "TD") {
+			tdEl = tdEl.parentElement;
+		}
+		const [_, row, col] = tdEl.id.split("-");
 		const action = getCurAction();
 
 		if(action === "dig") {
