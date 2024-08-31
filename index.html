@@ -56,7 +56,7 @@
 					<gw-icon iconKey="circle-question" title="Unknown"></gw-icon>
 				</label>
 			</fieldset>
-			<gw-shortcuts role="application" aria-describedby="spnDataGrid"
+			<gw-shortcuts role="application" aria-describedby="asiTblField"
 			code_0="ArrowRight"
 				handler_0="GW.Minesweeper.tblFieldOnKbdNav(event)"
 				info_0="Move right a column"
@@ -116,7 +116,7 @@
 				<span id="spnDataGrid" class="hidden">Data Grid.</span>
 				<div class="scroll-container">
 					<table id="tblField"
-						aria-labelledby="spnFieldLabel"
+						aria-labelledby="spnFieldLabel spnDataGrid"
 						role="grid"
 						tabindex="0"
 						onfocusin="GW.Minesweeper.tblFieldOnFocusIn(event)"
