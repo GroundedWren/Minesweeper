@@ -713,7 +713,7 @@ window.GW = window.GW || {};
 			this.iconKey = this.getAttribute("iconKey");
 			this.iconObj = ns.SVGLib.Icons[this.iconKey];
 
-			this.titleText = this.getAttribute("title");
+			this.titleText = this.getAttribute("name") || this.getAttribute("title");
 			if (this.hasAttribute("titleId")) {
 				const titleEl = document.getElementById(this.getAttribute("titleId"));
 				this.titleText = titleEl.innerText;

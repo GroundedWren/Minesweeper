@@ -127,7 +127,10 @@ window.GW = window.GW || {};
 		const hadFocus = tbodyField.matches(":focus-within");
 		tbodyField.innerHTML = ns.Data.map(dataRow => `
 			<tr>${dataRow.map(squareData => `
-				<td id="cell-${squareData.Id}">
+				<td id="cell-${squareData.Id}"
+					aria-labelledby="${squareData.Sts === "dig" ? "spnDugSquareLabel" : "spnSquareLabel"}"
+					aria-describedby="status-${squareData.Id}"
+				>
 					${getCellContent(squareData)}
 				</td>
 			`).join("")}</tr>
@@ -156,7 +159,11 @@ window.GW = window.GW || {};
 	 * @returns An HTML string
 	 */
 	function getCellContent(squareData) {
-		const btnOpenTag = `<button data-sts="${squareData.Sts}" tabindex="-1" onclick="GW.Minesweeper.onSquareActivate(event)">`;
+		const btnOpenTag = `<button
+			data-sts="${squareData.Sts}"
+			tabindex="-1"
+			onclick="GW.Minesweeper.onSquareActivate(event)"
+		>`;
 		switch(squareData.Sts) {
 			case null: {
 				return `${btnOpenTag}
@@ -164,30 +171,30 @@ window.GW = window.GW || {};
 			}
 			case "flag": {
 				return `${btnOpenTag}
-					<gw-icon iconKey="flag" title="Flagged"></gw-icon>
+					<gw-icon iconKey="flag" name="Flagged" id="status-${squareData.Id}"></gw-icon>
 				</button>`
 			}
 			case "unknown": {
 				return `${btnOpenTag}
-					<gw-icon iconKey="circle-question" title="Unknown"></gw-icon>
+					<gw-icon iconKey="circle-question" name="Marked unknown" id="status-${squareData.Id}"></gw-icon>
 				</button>`
 			}
 			case "dig": {
 				return squareData.Cnt < 0 
 					? `<gw-icon
 						iconKey="bomb"
-						title="mine"
+						name="mine"
 						class="dug-square"
 						tabindex="-1"
 						role="figure"
-						aria-describedby="spnDugSquareLabel spnMineLabel"
+						aria-describedby="spnMineLabel"
 					></gw-icon>` 
 					: `<div
 						data-Cnt="${squareData.Cnt}"
 						class="dug-square"
 						tabindex="-1"
 						role="figure"
-						aria-labelledby="spnDugSquareLabel spnFindings${squareData.Id} spnMinesNearbyLabel"
+						aria-labelledby="spnFindings${squareData.Id} spnMinesNearbyLabel"
 					><span id="spnFindings${squareData.Id}">${squareData.Cnt}<span></div>`;
 			}
 		}

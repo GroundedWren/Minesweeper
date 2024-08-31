@@ -49,15 +49,15 @@
 				<legend>Mode</legend>
 				<label class="text-after">
 					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)" value="dig" checked>
-					<gw-icon iconKey="person-digging" title="dig"></gw-icon>
+					<gw-icon iconKey="person-digging" name="dig"></gw-icon>
 				</label>
 				<label class="text-after">
 					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)" value="flag">
-					<gw-icon iconKey="flag" title="Flag"></gw-icon>
+					<gw-icon iconKey="flag" name="Flag"></gw-icon>
 				</label>
 				<label class="text-after">
 					<input type="radio" name="clickMode" onchange="GW.Minesweeper.onModeChange(event)" value="unknown">
-					<gw-icon iconKey="circle-question" title="Unknown"></gw-icon>
+					<gw-icon iconKey="circle-question" name="Unknown"></gw-icon>
 				</label>
 			</fieldset>
 			<gw-shortcuts role="application" aria-describedby="asiTblField"
@@ -131,13 +131,14 @@
 					</table>
 				</div>
 				<aside id="asiTblField">
-					<gw-icon iconKey="keyboard" title="Keyboard navigation available"></gw-icon>
+					<gw-icon iconKey="keyboard" name="Keyboard navigation available"></gw-icon>
 					<span class="sr-only">in focus mode</span>
 					<span>(<kbd>Alt</kbd>+<kbd>S</kbd>)</span>
 				</aside>
 				<span id="spnSquareDigLabel" class="hidden">Dig square</span>
 				<span id="spnSquareFlagLabel" class="hidden">Flag as mine</span>
 				<span id="spnSquareUnknownLabel" class="hidden">Mark unknown</span>
+				<span id="spnSquareLabel" class="hidden">Square</span>
 				<span id="spnDugSquareLabel" class="hidden">Dug square</span>
 				<span id="spnMinesNearbyLabel" class="hidden">Nearby</span>
 				<span id="spnFieldLabel" class="hidden">Minefield</span>
