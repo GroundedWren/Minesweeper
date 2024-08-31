@@ -128,6 +128,8 @@ window.GW = window.GW || {};
 		}
 
 		checkWinstate();
+
+		localStorage.setItem("data", JSON.stringify(GW.Minesweeper.Data));
 	}
 
 	function checkWinstate() {
@@ -305,7 +307,7 @@ window.addEventListener("load", () => {
 			cbxDarkMode.checked = window.matchMedia("(prefers-color-scheme: dark)").matches;
 			break;
 	}
-	GW.Minesweeper.Data = localStorage.getItem("data");
+	GW.Minesweeper.Data = JSON.parse(localStorage.getItem("data"));
 	if(!GW.Minesweeper.Data) {
 		GW.Minesweeper.generateGameData(10, 10, 0.12);
 	}
