@@ -146,9 +146,8 @@ window.GW = window.GW || {};
 		}
 		else {
 			document.getElementById("tblField").setAttribute("tabindex", "0");
+			updateFace();
 		}
-
-		checkWinstate();
 
 		localStorage.setItem("data", JSON.stringify(GW.Minesweeper.Data));
 	}
@@ -201,25 +200,6 @@ window.GW = window.GW || {};
 	}
 
 	/**
-	 * Updates the game to indicate if the player won
-	 */
-	function checkWinstate() {
-		for(let i = 0; i < ns.Data.length; i++) {
-			for(let j = 0; j < ns.Data[i].length; j++) {
-				const square = ns.Data[i][j]
-				if((square.Cnt === -1 && square.Sts !== "flag")
-					|| (square.Cnt !== -1 && square.Sts === "flag")
-				) {
-					document.getElementById("divSunglasses").setAttribute("hidden", "true");
-					return;
-				}
-			}
-		}
-		setTimeout(() => GW.Controls.Toaster.showToast("You won! 😎"), 0);
-		document.getElementById("divSunglasses").removeAttribute("hidden");
-	}
-
-	/**
 	 * Puts focus on the specified square
 	 * @param {HTMLElement} tdFocus table cell getting focus
 	 */
@@ -233,6 +213,68 @@ window.GW = window.GW || {};
 		tblField.setAttribute("data-col", col);
 
 		tdFocus.querySelector("button, .dug-square").focus();
+		
+		setTimeout( () => updateFace(), 0);
+	}
+
+	/**
+	 * Updates the game's avatar face
+	 */
+	function updateFace() {
+		let win = true;
+		let death = false;
+		for(let i = 0; i < ns.Data.length; i++) {
+			for(let j = 0; j < ns.Data[i].length; j++) {
+				const square = ns.Data[i][j]
+				if((square.Cnt === -1 && square.Sts !== "flag")
+					|| (square.Cnt !== -1 && square.Sts === "flag")
+				) {
+					win = false
+				}
+				if(square.Cnt === -1 && square.Sts === "dig") {
+					win = false;
+					death = true;
+				}
+			}
+		}
+
+		const spnSunglasses = document.getElementById("spnSunglasses");
+		const spnDead = document.getElementById("spnDead");
+		const spnThink = document.getElementById("spnThink");
+		const spnSmile = document.getElementById("spnSmile");
+		const showedSunglasses = !spnSunglasses.hasAttribute("hidden");
+
+		[spnSunglasses, spnDead, spnThink, spnSmile].forEach(spn => spn.setAttribute("hidden" ,"true"));
+		if(win) {
+			spnSunglasses.removeAttribute("hidden");
+			if(!showedSunglasses) {
+				setTimeout(() => GW.Controls.Toaster.showToast("You won! 😎"), 0);
+			}
+		}
+		else if(death) {
+			spnDead.removeAttribute("hidden");
+		}
+		else {
+			const focusedTableElem = document.getElementById("tbodyField").querySelector(":focus");
+			if(!focusedTableElem) {
+				spnSmile.removeAttribute("hidden");
+			}
+			else {
+				let tdEl = focusedTableElem;
+				while(tdEl.tagName !== "TD") {
+					tdEl = tdEl.parentElement;
+				}
+				const [_, row, col] = tdEl.id.split("-");
+				const status = ns.Data[row][col].Sts;
+				if(status === "dig" || status === "flag") {
+					spnSmile.removeAttribute("hidden");
+				}
+				else {
+					spnThink.removeAttribute("hidden");
+				}
+			}
+
+		}
 	}
 
 	/**
