@@ -77,7 +77,7 @@ window.GW.Controls = window.GW.Controls || {};
 			"beforeend",
 			`
 			<span id="${toasterLabelId}">Message toaster</span>
-			<aside aria-labelledby="${toasterLabelId}" id="${ns.TOASTER_ASIDE_ID}" aria-live="polite" tabindex="-1"></aside>
+			<aside aria-labelledby="${toasterLabelId}" id="${ns.TOASTER_ASIDE_ID}" aria-live="polite"></aside>
 			`
 		);
 	});
