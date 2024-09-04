@@ -17,6 +17,7 @@ window.GW = window.GW || {};
 
 		ns.generateGameData(elements["numRows"].value, elements["numCols"].value, elements["numMineRate"].value / 100.0);
 		ns.renderGame();
+		ns.selectMode("dig");
 	}
 
 	/**
