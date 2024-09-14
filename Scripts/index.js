@@ -195,7 +195,7 @@ window.GW = window.GW || {};
 						tabindex="-1"
 						role="figure"
 						aria-labelledby="spnFindings${squareData.Id} spnMinesNearbyLabel"
-					><span id="spnFindings${squareData.Id}">${squareData.Cnt}<span></div>`;
+					><span id="spnFindings${squareData.Id}">${squareData.Cnt}</span></div>`;
 			}
 		}
 	}
