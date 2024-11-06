@@ -39,6 +39,10 @@ File Description: CSS Variables
 	--sqr-7-color: #400040;
 	--sqr-8-bkg-color: #660000;
 	--sqr-8-color: #ff9494;
+
+	input {
+		color-scheme: light;
+	}
 }
 
 @media not print {
@@ -77,5 +81,9 @@ File Description: CSS Variables
 		--sqr-7-color: #ff80c0;
 		--sqr-8-bkg-color: #ff9494;
 		--sqr-8-color: #660000;
+
+		input {
+			color-scheme: dark;
+		}
 	}
 }
