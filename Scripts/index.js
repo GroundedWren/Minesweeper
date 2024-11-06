@@ -16,6 +16,7 @@ window.GW = window.GW || {};
 		const elements = event.target.elements;
 
 		ns.generateGameData(elements["numRows"].value, elements["numCols"].value, elements["numMineRate"].value / 100.0);
+		localStorage.setItem("hasArmor", "true");
 		ns.renderGame();
 		ns.selectMode("dig");
 	}
@@ -310,6 +311,14 @@ window.GW = window.GW || {};
 	 * @param {number} col Starting square's col
 	 */
 	function digAround(row, col) {
+		if(localStorage.getItem("hasArmor") === "true") {
+			SURROUNDING_DELTAS.concat([[0, 0]]).forEach(
+				deltas => diffuseSquare(row + deltas[0], col + deltas[1])
+			);
+			ns.renderGame();
+			localStorage.setItem("hasArmor", "false");
+		}
+
 		const cellArr = [{row: row, col: col }];
 		while(cellArr.length) {
 			const coords = cellArr.pop();
@@ -325,6 +334,26 @@ window.GW = window.GW || {};
 				}
 			}
 		}
+	}
+
+	function diffuseSquare(row, col) {
+		if(!ns.Data[row] || !ns.Data[row][col] || ns.Data[row][col].Cnt !== -1) {
+			return;
+		}
+		
+		ns.Data[row][col].Cnt = SURROUNDING_DELTAS.filter(deltas => {
+			const newRow = row + deltas[0];
+			const newCol = col + deltas[1];
+			return ns.Data[newRow] && ns.Data[newRow][newCol] && ns.Data[newRow][newCol].Cnt === -1;
+		}).length;
+
+		SURROUNDING_DELTAS.forEach(deltas => {
+			const newRow = row + deltas[0];
+			const newCol = col + deltas[1];
+			if(ns.Data[newRow] && ns.Data[newRow][newCol] && ns.Data[newRow][newCol].Cnt > 0) {
+				ns.Data[newRow][newCol].Cnt -= 1;
+			}
+		});
 	}
 
 	/**
@@ -425,6 +454,7 @@ window.addEventListener("load", () => {
 	GW.Minesweeper.Data = JSON.parse(localStorage.getItem("data"));
 	if(!GW.Minesweeper.Data) {
 		GW.Minesweeper.generateGameData(10, 10, 0.12);
+		localStorage.setItem("hasArmor", "true");
 	}
 	GW.Minesweeper.renderGame();
 });
