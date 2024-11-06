@@ -68,7 +68,8 @@ footer {
 
 	> label {
 		padding-block: 5px;
-		padding-inline-end: 10px;
+		flex-grow: 1;
+		justify-content: center;
 	}
 }
 
