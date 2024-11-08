@@ -315,7 +315,6 @@ window.GW = window.GW || {};
 			SURROUNDING_DELTAS.concat([[0, 0]]).forEach(
 				deltas => diffuseSquare(row + deltas[0], col + deltas[1])
 			);
-			ns.renderGame();
 			localStorage.setItem("hasArmor", "false");
 		}
 
