@@ -51,6 +51,7 @@ main {
 	max-width: 1200px;
 	margin-inline: auto;
 	user-select: none;
+	padding: 5px;
 }
 
 footer {
