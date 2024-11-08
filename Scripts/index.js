@@ -335,6 +335,11 @@ window.GW = window.GW || {};
 		}
 	}
 
+	/**
+	 * Removes a mine from a square if one exists
+	 * @param {number} row Square to diffuse's row
+	 * @param {number} col Square to diffuse's column
+	 */
 	function diffuseSquare(row, col) {
 		if(!ns.Data[row] || !ns.Data[row][col] || ns.Data[row][col].Cnt !== -1) {
 			return;
