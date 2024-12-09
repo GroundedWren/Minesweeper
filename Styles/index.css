@@ -89,8 +89,11 @@ footer {
 	width: initial;
 	margin-inline: auto;
 
+	border: none;
+
 	td {
 		padding: 0;
+		border: 0;
 	}
 
 	button, .dug-square {
@@ -104,11 +107,15 @@ footer {
 
 		border: none;
 		overflow: clip;
+		box-shadow: 0px 0px 0px 1px var(--border-color);
 	}
 
 	.dug-square {
-		&[data-Cnt="0"] > * {
-			opacity: 0;
+		&[data-Cnt="0"] {
+			background-color: var(--sqr-0-bkg-color);
+			> * {
+				opacity: 0;
+			}
 		}
 		&[data-Cnt="1"] {
 			background-color: var(--sqr-1-bkg-color);

@@ -23,6 +23,7 @@ File Description: CSS Variables
 	--accent-color: #C0DBB0;
 	--invalid-color: #5C01D8;
 
+	--sqr-0-bkg-color: #FFFFFF;
 	--sqr-1-bkg-color: #FFFFFF;
 	--sqr-1-color: #000000;
 	--sqr-2-bkg-color: #dfdfff;
@@ -65,6 +66,7 @@ File Description: CSS Variables
 		--accent-color: #8D4A95;
 		--invalid-color: #a35ffe;
 
+		--sqr-0-bkg-color: #000000;
 		--sqr-1-bkg-color: #000000;
 		--sqr-1-color: #ffffff;
 		--sqr-2-bkg-color: #0000ff;
