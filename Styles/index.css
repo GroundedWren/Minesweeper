@@ -111,6 +111,9 @@ footer {
 	}
 
 	.dug-square {
+		&:not([data-Cnt]) {
+			background-color: var(--mine-bkg-color);
+		}
 		&[data-Cnt="0"] {
 			background-color: var(--sqr-0-bkg-color);
 			> * {
