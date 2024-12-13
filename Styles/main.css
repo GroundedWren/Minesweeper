@@ -243,7 +243,7 @@ button, input:is([type="button"], [type="submit"], [type="reset"]), input[type="
 
 button[aria-expanded="true"], button[aria-pressed="true"], details[open] summary {
 	background-color: var(--selected-color);
-	font-weight: bold;
+	box-shadow: 0px 0px 3px 1px var(--link-color) inset;
 }
 
 :is(button, select, input:is([type="button"], [type="submit"], [type="reset"]))[disabled], input[type="file"][disabled]::file-selector-button {
