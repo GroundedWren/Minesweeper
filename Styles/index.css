@@ -82,6 +82,7 @@ footer {
 	overflow-y: auto;
 
 	padding-block: 5px;
+	padding-inline: 5px;
 }
 
 #tblField {
@@ -89,7 +90,7 @@ footer {
 	width: initial;
 	margin-inline: auto;
 
-	border: none;
+	border: 1px solid var(--border-color);
 
 	td {
 		padding: 0;
