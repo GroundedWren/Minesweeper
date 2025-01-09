@@ -53,7 +53,7 @@ window.GW.Controls = window.GW.Controls || {};
 						}
 
 						border: 4px solid var(--border-color, black);
-						background-color: var(--background-color, white);
+						background-color: var(--accent-color, white);
 						color: var(--text-color, black);
 
 						padding: 5px;

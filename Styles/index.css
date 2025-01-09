@@ -97,6 +97,27 @@ footer {
 		border: 0;
 	}
 
+	.dig-indicator, .flag-indicator {
+		display: none;
+	}
+
+	button[data-sts="null"]:is(:focus-within, :hover) {
+		&[aria-labelledby="spnSquareDigLabel"] {
+			outline: none !important;
+			position: static !important;
+			.dig-indicator {
+				display: block;
+			}
+		}
+		&[aria-labelledby="spnSquareFlagLabel"][aria-pressed="false"] {
+			outline: none !important;
+			position: static !important;
+			.flag-indicator {
+				display: block;
+			}
+		}
+	}
+
 	button, .dug-square {
 		aspect-ratio: 1 / 1;
 		min-width: var(--square-size, 30px);
