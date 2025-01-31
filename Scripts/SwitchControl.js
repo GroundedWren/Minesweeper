@@ -188,7 +188,7 @@ window.GW.Controls = window.GW.Controls || {};
 
 		copyParentLabelA11y = () => {
 			if(this.ParentLabelEl) {
-				this.setAttribute("aria-label", this.ParentLabelEl.innerText.trim());
+				this.setAttribute("aria-label", this.ParentLabelEl.textContent.trim());
 			}
 		};
 	}
