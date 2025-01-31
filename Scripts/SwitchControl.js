@@ -106,12 +106,43 @@ window.GW.Controls = window.GW.Controls || {};
 
 			this.setupInputObserver();
 			this.copyInputA11y();
+
+			this.#overrideInputProps();
 			
 			this.setupParentLabelObserver();
 			this.copyParentLabelA11y();
 
 			this.IsInitialized = true;
 		};
+
+		//Don't try this at home
+		#overrideInputProps() {
+			const inputProto = Object.getPrototypeOf(this.InputEl);
+			const inputCheckedDesc = Object.getOwnPropertyDescriptor(inputProto, "checked");
+			const originalSet = inputCheckedDesc.set;
+			inputCheckedDesc.set = this.#createDelegate(
+				inputCheckedDesc,
+				function(inputEl, originalSet, value) {
+					inputEl.setAttribute("checked", value ? "true" : "false");
+
+					const newSet = this.set;
+					this.set = originalSet;
+					Object.defineProperty(inputEl, "checked", this);
+
+					inputEl.checked = value;
+
+					this.set = newSet;
+					Object.defineProperty(inputEl, "checked", this);
+				},
+				[this.InputEl, originalSet]
+			);
+			Object.defineProperty(this.InputEl, "checked", inputCheckedDesc);
+		}
+		#createDelegate = function(context, method, args) {
+			return function generatedFunction() {
+				return method.apply(context, (args || []).concat(...arguments));
+			}
+		}
 
 		onKeydown = (event) => {
 			switch(event.key) {
@@ -140,6 +171,7 @@ window.GW.Controls = window.GW.Controls || {};
 
 			this.InputEl.removeAttribute("inert");
 			this.InputEl.click();
+			this.InputEl.setAttribute("checked", this.InputEl.checked);
 			this.InputEl.setAttribute("inert", "true");
 		};
 
@@ -185,7 +217,6 @@ window.GW.Controls = window.GW.Controls || {};
 				);
 			}
 		}
-
 		copyParentLabelA11y = () => {
 			if(this.ParentLabelEl) {
 				this.setAttribute("aria-label", this.ParentLabelEl.textContent.trim());
