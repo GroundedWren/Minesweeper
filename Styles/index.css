@@ -61,6 +61,10 @@ footer {
 	}
 }
 
+gw-switch {
+	min-width: 20px;
+}
+
 #fsetMode {
 	display: flex;
 	justify-content: space-between;

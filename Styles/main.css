@@ -297,7 +297,7 @@ form {
 label:not(.input-vertical) {
 	display: inline-flex;
 	align-items: center;
-	&.text-after :is(input, select) {
+	&.text-after :is(input, select, [role="switch"]) {
 		margin-inline-end: 5px;
 	}
 	&:not(.text-after) :is(input, select) {

@@ -19,6 +19,7 @@
 	<script src="./Scripts/ShortcutsControl.js"></script>
 	<script src="./Scripts/SVGIconControl.js"></script>
 	<script src="./Scripts/ToasterControl.js"></script>
+	<script src="./Scripts/SwitchControl.js"></script>
 	
 	<link href="./Styles/index.css" rel="stylesheet" type="text/css">
 	<script src="./Scripts/index.js"></script>
@@ -32,11 +33,17 @@
 		<div><h1>Minesweeper</h1></div>
 		<div id="mainHeaderRight">
 			<label class="text-after">
-				<input id="cbxDarkMode" type="checkbox" oninput="localStorage.setItem('theme', event.target.checked ? 'dark' : 'light')">
+				<gw-switch><input id="cbxDarkMode"
+					type="checkbox"
+					oninput="localStorage.setItem('theme', event.target.checked ? 'dark' : 'light')"
+				></gw-switch>
 				Dark mode
 			</label>
 			<label class="text-after">
-				<input id="cbxBigSquares" type="checkbox" oninput="localStorage.setItem('use-big-squares', event.target.checked ? 'true' : 'false')">
+				<gw-switch><input id="cbxBigSquares"
+					type="checkbox"
+					oninput="localStorage.setItem('use-big-squares', event.target.checked ? 'true' : 'false')"
+				></gw-switch>
 				Big squares
 			</label>
 			<button onclick="document.getElementById('diaNew').showModal()">New Game</button>
