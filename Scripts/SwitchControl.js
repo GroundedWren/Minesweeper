@@ -175,7 +175,7 @@ window.GW.Controls = window.GW.Controls || {};
 
 			this.InputEl.removeAttribute("inert");
 			this.InputEl.click();
-			this.InputEl.setAttribute("checked", this.InputEl.checked);
+			this.copyInputA11y();
 			this.InputEl.setAttribute("inert", "true");
 		};
 
