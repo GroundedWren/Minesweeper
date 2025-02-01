@@ -12,8 +12,8 @@ window.GW.Controls = window.GW.Controls || {};
 		InstanceId;
 		IsInitialized;
 		LabelIdx = 0;
-		InputObserver = null;
 		ParentLabelObserver = null;
+		ForLabelObserver = null;
 
 		constructor() {
 			super();
@@ -73,7 +73,7 @@ window.GW.Controls = window.GW.Controls || {};
 				}
 			}
 			else {
-				this.setupParentLabelObserver();
+				this.renderA11yProps();
 			}
 		}
 
@@ -104,39 +104,43 @@ window.GW.Controls = window.GW.Controls || {};
 			this.addEventListener("keyup", this.onKeyup);
 			this.addEventListener("click", this.onClick);
 
-			this.setupInputObserver();
-			this.copyInputA11y();
-
 			this.#overrideInputProps();
-			
-			this.setupParentLabelObserver();
-			this.copyParentLabelA11y();
+
+			this.renderA11yProps();
 
 			this.IsInitialized = true;
 		};
 
-		//Don't try this at home
+		renderA11yProps() {
+			this.copyInputA11y();
+
+			this.setupParentLabelObserver();
+			this.copyParentLabelA11y();
+		}
+
 		#overrideInputProps() {
-			const inputProto = Object.getPrototypeOf(this.InputEl);
-			const inputCheckedDesc = Object.getOwnPropertyDescriptor(inputProto, "checked");
-			const originalSet = inputCheckedDesc.set;
-			inputCheckedDesc.set = this.#createDelegate(
-				inputCheckedDesc,
-				function(inputEl, originalSet, value) {
-					inputEl.setAttribute("checked", value ? "true" : "false");
-
-					const newSet = this.set;
-					this.set = originalSet;
-					Object.defineProperty(inputEl, "checked", this);
-
-					inputEl.checked = value;
-
-					this.set = newSet;
-					Object.defineProperty(inputEl, "checked", this);
-				},
-				[this.InputEl, originalSet]
+			const checkedDescriptor = Object.getOwnPropertyDescriptor(
+				Object.getPrototypeOf(this.InputEl),
+				"checked"
 			);
-			Object.defineProperty(this.InputEl, "checked", inputCheckedDesc);
+			const originalSet = checkedDescriptor.set;
+			checkedDescriptor.set = this.#createDelegate(
+				this.InputEl,
+				function(checkedDescriptor, originalSet, customHandler, value) {
+					const newSet = checkedDescriptor.set;
+					checkedDescriptor.set = originalSet;
+					Object.defineProperty(this, "checked", checkedDescriptor);
+
+					this.checked = value;
+
+					checkedDescriptor.set = newSet;
+					Object.defineProperty(this, "checked", checkedDescriptor);
+
+					customHandler();
+				},
+				[checkedDescriptor, originalSet, this.copyInputA11y]
+			);
+			Object.defineProperty(this.InputEl, "checked", checkedDescriptor);
 		}
 		#createDelegate = function(context, method, args) {
 			return function generatedFunction() {
@@ -175,13 +179,6 @@ window.GW.Controls = window.GW.Controls || {};
 			this.InputEl.setAttribute("inert", "true");
 		};
 
-		setupInputObserver() {
-			this.InputObserver?.disconnect();
-			this.InputObserver = new MutationObserver(this.copyInputA11y).observe(
-				this.InputEl,
-				{attributes: true, childList: false, subtree: false}
-			);
-		}
 		copyInputA11y = () => {
 			["aria-labelledby", "aria-describedby", "aria-details"].forEach(attrName => {
 				const inputAttr = this.InputEl.getAttribute(attrName);
@@ -194,10 +191,20 @@ window.GW.Controls = window.GW.Controls || {};
 			});
 			
 			if(this.InputEl.id) {
-				const labelIds = [];
+				const labelIds = []; //There should really only be one
 				document.querySelectorAll(`[for="${this.InputEl.id}"]`).forEach(labelEl => {
+					this.ForLabelObserver?.disconnect();
+
 					labelEl.id = labelEl.id || this.getId(`label-${++this.LabelIdx}`);
 					labelIds.push(labelEl.id);
+
+					this.ForLabelObserver = new MutationObserver((mutationList) => {
+						setTimeout(this.copyInputA11y, 0);
+					});
+				this.ForLabelObserver.observe(
+					labelEl,
+					{attributes: true, childList: false, subtree: false}
+				)
 				});
 				this.setAttribute(
 					"aria-labelledby",
@@ -211,7 +218,8 @@ window.GW.Controls = window.GW.Controls || {};
 		setupParentLabelObserver() {
 			this.ParentLabelObserver?.disconnect();
 			if(this.ParentLabelEl) {
-				this.ParentLabelObserver = new MutationObserver(this.copyParentLabelA11y).observe(
+				this.ParentLabelObserver = new MutationObserver(this.copyParentLabelA11y);
+				this.ParentLabelObserver.observe(
 					this.ParentLabelEl,
 					{characterData: true, childList: true, subtree: true}
 				);
