@@ -32,20 +32,25 @@
 		</div>
 		<div><h1>Minesweeper</h1></div>
 		<div id="mainHeaderRight">
-			<label class="text-after">
-				<gw-switch><input id="cbxDarkMode"
-					type="checkbox"
-					oninput="localStorage.setItem('theme', event.target.checked ? 'dark' : 'light')"
-				></gw-switch>
-				Dark mode
-			</label>
-			<label class="text-after">
-				<gw-switch><input id="cbxBigSquares"
-					type="checkbox"
-					oninput="localStorage.setItem('use-big-squares', event.target.checked ? 'true' : 'false')"
-				></gw-switch>
-				Big squares
-			</label>
+			<details>
+				<summary><gw-icon iconKey="gear" name="Settings"></gw-icon></summary>
+				<div id="divSettings">
+					<label class="text-after">
+						<gw-switch><input id="cbxDarkMode"
+							type="checkbox"
+							oninput="localStorage.setItem('theme', event.target.checked ? 'dark' : 'light')"
+						></gw-switch>
+						Dark mode
+					</label>
+					<label class="text-after">
+						<gw-switch><input id="cbxBigSquares"
+							type="checkbox"
+							oninput="localStorage.setItem('use-big-squares', event.target.checked ? 'true' : 'false')"
+						></gw-switch>
+						Big squares
+					</label>
+				</div>
+			</details>
 			<button onclick="document.getElementById('diaNew').showModal()">New Game</button>
 		</div>
 	</header>

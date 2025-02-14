@@ -25,7 +25,23 @@ body:has(#cbxBigSquares:checked) {
 
 #mainHeaderRight {
 	display: flex;
+	align-items: start;
 	gap: 7px;
+	position: relative;
+
+	#divSettings {
+		position: absolute;
+		background-color: var(--background-color);
+		padding: 4px;
+		border: 1px solid var(--border-color);
+
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		label {
+			min-height: 30px;
+		}
+	}
 }
 
 @media (max-width: 650px) {
@@ -41,6 +57,11 @@ body:has(#cbxBigSquares:checked) {
 		
 		#mainHeaderLeft, #mainHeaderRight {
 			justify-self: auto;
+		}
+		#mainHeaderRight {
+			#divSettings {
+				position: relative;
+			}
 		}
 	}
 }
@@ -249,4 +270,9 @@ dialog {
 
 label {
 	user-select: none;
+}
+
+button:has(gw-icon) {
+	display: flex;
+	align-items: center;
 }
