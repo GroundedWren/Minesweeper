@@ -53,7 +53,7 @@ a {
 	left: -99999999px;
 	top: 0px;
 	
-	&:focus {
+	&:focus-within {
 		position: revert;
 		left: revert;
 		top: revert;

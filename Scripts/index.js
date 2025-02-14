@@ -381,6 +381,19 @@ window.GW = window.GW || {};
 		updateButtons();
 	};
 
+	/** Updates additional descriptions on the buttons */
+	ns.onAddlDescChange = () => {
+		const showAddlDesc = document.getElementById("cbxAddlDesc").checked;
+		document.querySelectorAll("#tblField button").forEach(btn => {
+			if(showAddlDesc) {
+				btn.setAttribute("aria-describedby", btn.parentElement.getAttribute("aria-describedby"));
+			}
+			else {
+				btn.removeAttribute("aria-describedby");
+			}
+		});
+	};
+
 	/**
 	 * Updates the minefield buttons for the current action mode
 	 */
@@ -474,5 +487,6 @@ window.addEventListener("load", () => {
 		localStorage.setItem("hasArmor", "true");
 	}
 	GW.Minesweeper.renderGame();
+	GW.Minesweeper.onAddlDescChange();
 });
 window.addEventListener("beforeunload", (event) => {});
