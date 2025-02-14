@@ -169,13 +169,13 @@ window.GW.Controls = window.GW.Controls || {};
 
 		onClick = (event) => {
 			if(event.target === this.InputEl) {
+				this.copyInputA11y();
 				return; // Click in progress
 			}
 			event.preventDefault();
 
 			this.InputEl.removeAttribute("inert");
 			this.InputEl.click();
-			this.copyInputA11y();
 			this.InputEl.setAttribute("inert", "true");
 		};
 
