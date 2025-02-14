@@ -122,7 +122,7 @@ gw-switch {
 		border: 0;
 	}
 
-	.dig-indicator, .flag-indicator {
+	.dig-indicator, .flag-indicator, .q-indicator {
 		display: none;
 	}
 
@@ -138,6 +138,13 @@ gw-switch {
 			outline: none !important;
 			position: static !important;
 			.flag-indicator {
+				display: block;
+			}
+		}
+		&[aria-labelledby="spnSquareUnknownLabel"][aria-pressed="false"] {
+			outline: none !important;
+			position: static !important;
+			.q-indicator {
 				display: block;
 			}
 		}
