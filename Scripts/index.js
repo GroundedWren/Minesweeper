@@ -117,7 +117,7 @@ window.GW = window.GW || {};
 			tblField.setAttribute("tabindex", "-1");
 		}
 		else {
-			focusFieldSquare(event.target.parentElement);
+			focusFieldSquare(event.target.parentElement.parentElement);
 		}
 	};
 
@@ -130,10 +130,15 @@ window.GW = window.GW || {};
 		tbodyField.innerHTML = ns.Data.map(dataRow => `
 			<tr>${dataRow.map(squareData => `
 				<td id="cell-${squareData.Id}"
-					aria-labelledby="${squareData.Sts === "dig" ? "spnDugSquareLabel" : "spnSquareLabel"}"
-					aria-describedby="status-${squareData.Id}"
+					aria-labelledby="spnCellLabel"
 				>
-					${getCellContent(squareData)}
+					<div
+						role="group"
+						aria-labelledby="${squareData.Sts === "dig" ? "spnDugSquareLabel" : "spnSquareLabel"}"
+						aria-describedby="status-${squareData.Id}"
+					>
+						${getCellContent(squareData)}
+					</div>
 				</td>
 			`).join("")}</tr>
 		`).join("");
@@ -221,7 +226,7 @@ window.GW = window.GW || {};
 	function focusFieldSquare(tdFocus) {
 		const tblField = document.getElementById("tblField");
 		tblField.querySelectorAll("button, .dug-square").forEach(
-			elem => elem.setAttribute("tabindex", elem.parentElement === tdFocus ? "0" : "-1")
+			elem => elem.setAttribute("tabindex", elem.parentElement.parentElement === tdFocus ? "0" : "-1")
 		);
 		const [_, row, col] = tdFocus.id.split("-");
 		tblField.setAttribute("data-row", row);
@@ -381,19 +386,6 @@ window.GW = window.GW || {};
 		updateButtons();
 	};
 
-	/** Updates additional descriptions on the buttons */
-	ns.onAddlDescChange = () => {
-		const showAddlDesc = document.getElementById("cbxAddlDesc").checked;
-		document.querySelectorAll("#tblField button").forEach(btn => {
-			if(showAddlDesc) {
-				btn.setAttribute("aria-describedby", btn.parentElement.getAttribute("aria-describedby"));
-			}
-			else {
-				btn.removeAttribute("aria-describedby");
-			}
-		});
-	};
-
 	/**
 	 * Updates the minefield buttons for the current action mode
 	 */
@@ -487,6 +479,5 @@ window.addEventListener("load", () => {
 		localStorage.setItem("hasArmor", "true");
 	}
 	GW.Minesweeper.renderGame();
-	GW.Minesweeper.onAddlDescChange();
 });
 window.addEventListener("beforeunload", (event) => {});

@@ -33,18 +33,10 @@
 		<div><h1>Minesweeper</h1></div>
 		<div id="mainHeaderRight">
 			<details>
-				<summary title="If you are using NVDA you may want to disable additional square descriptions">
+				<summary>
 					<gw-icon iconKey="gear" name="Settings"></gw-icon>
 				</summary>
 				<div id="divSettings">
-					<label class="text-after hide-until-focus">
-						<gw-switch><input id="cbxAddlDesc"
-							type="checkbox"
-							oninput="GW.Minesweeper.onAddlDescChange()"
-							checked
-						></gw-switch>
-						(Screen Reader)<br>Additional button descriptions
-					</label>
 					<label class="text-after">
 						<gw-switch><input id="cbxDarkMode"
 							type="checkbox"
@@ -162,6 +154,7 @@
 					<span class="sr-only">in focus mode</span>
 					<span>(<kbd>Alt</kbd>+<kbd>S</kbd>)</span>
 				</aside>
+				<span id="spnCellLabel" class="hidden">Cell</span>
 				<span id="spnSquareDigLabel" class="hidden">Dig square</span>
 				<span id="spnSquareFlagLabel" class="hidden">Flag as mine</span>
 				<span id="spnSquareUnknownLabel" class="hidden">Mark unknown</span>
