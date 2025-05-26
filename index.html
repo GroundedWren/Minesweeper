@@ -22,6 +22,7 @@
 	<script src="./Scripts/SwitchControl.js"></script>
 	
 	<link href="./Styles/index.css" rel="stylesheet" type="text/css">
+	<script src="./Scripts/MineSquareControl.js"></script>
 	<script src="./Scripts/index.js"></script>
 </head>
 <body>
@@ -143,13 +144,14 @@
 						role="grid"
 						tabindex="0"
 						onfocusin="GW.Minesweeper.tblFieldOnFocusIn(event)"
+						onfocusout="GW.Minesweeper.tblFieldOnFocusOut(event)"
 						data-row="0"
 						data-col="0"
 					>
 						<tbody id="tbodyField"></tbody>
 					</table>
 				</div>
-				<aside id="asiTblField">
+				<aside id="asiTblField" style="visibility: hidden;">
 					<gw-icon iconKey="keyboard" name="Keyboard navigation available"></gw-icon>
 					<span class="sr-only">in focus mode</span>
 					<span>(<kbd>Alt</kbd>+<kbd>S</kbd>)</span>

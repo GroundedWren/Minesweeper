@@ -124,6 +124,10 @@ gw-switch {
 		border: 0;
 	}
 
+	gw-mine-square {
+		contain: strict;
+	}
+
 	.dig-indicator, .flag-indicator, .q-indicator {
 		display: none;
 	}
@@ -212,11 +216,6 @@ gw-switch {
 }
 
 #secField {
-	&:has(#tblField:not(:focus-within)) {
-		#asiTblField > * {
-			visibility: hidden;
-		}
-	}
 	#asiTblField {
 		display: flex;
 		justify-content: center;
@@ -281,7 +280,7 @@ label {
 	user-select: none;
 }
 
-button:has(gw-icon) {
+button {
 	display: flex;
 	align-items: center;
 }
