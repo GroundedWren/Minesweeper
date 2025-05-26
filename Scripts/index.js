@@ -14,9 +14,15 @@ window.GW = window.GW || {};
 	ns.onNewGame = (event) => {
 		event.preventDefault();
 		const elements = event.target.elements;
+		const ngSize = {
+			Rows: elements["numRows"].value,
+			Columns: elements["numCols"].value,
+			MineRate: elements["numMineRate"].value,
+		};
+		localStorage.setItem("new-game-size", JSON.stringify(ngSize));
+		localStorage.setItem("has-armor", "true");
 
-		ns.generateGameData(elements["numRows"].value, elements["numCols"].value, elements["numMineRate"].value / 100.0);
-		localStorage.setItem("hasArmor", "true");
+		ns.generateGameData(ngSize.Rows, ngSize.Columns, ngSize.MineRate / 100.0);
 		ns.renderGame();
 		ns.selectMode("dig");
 	}
@@ -279,11 +285,11 @@ window.GW = window.GW || {};
 	 * @param {number} col Starting square's col
 	 */
 	function digAround(row, col) {
-		if(localStorage.getItem("hasArmor") === "true") {
+		if(localStorage.getItem("has-armor") === "true") {
 			SURROUNDING_DELTAS.concat([[0, 0]]).forEach(
 				deltas => diffuseSquare(row + deltas[0], col + deltas[1])
 			);
-			localStorage.setItem("hasArmor", "false");
+			localStorage.setItem("has-armor", "false");
 		}
 
 		const cellArr = [{row: row, col: col }];
@@ -427,10 +433,19 @@ window.addEventListener("load", () => {
 	
 	document.getElementById("cbxBigSquares").checked = localStorage.getItem("use-big-squares") === "true";
 
+	const ngSize = JSON.parse(localStorage.getItem("new-game-size")) || {
+		Rows: 10,
+		Columns: 10,
+		MineRate: 12,
+	};
+	document.getElementById("numRows").value = ngSize.Rows;
+	document.getElementById("numCols").value = ngSize.Columns;
+	document.getElementById("numMineRate").value = ngSize.MineRate;
+
 	GW.Minesweeper.Data = JSON.parse(localStorage.getItem("data"));
 	if(!GW.Minesweeper.Data) {
 		GW.Minesweeper.generateGameData(10, 10, 0.12);
-		localStorage.setItem("hasArmor", "true");
+		localStorage.setItem("has-armor", "true");
 	}
 	GW.Minesweeper.renderGame();
 });
