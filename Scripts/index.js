@@ -146,10 +146,10 @@ window.GW = window.GW || {};
 					<gw-mine-square
 						id="square-${squareData.Id}"
 						role="group"
-						aria-labelledby="${GW.Controls.MineSquareEl.getCellLabelledBy(squareData)}"
+						aria-labelledby="${ns.MineSquareEl.getCellLabelledBy(squareData)}"
 						aria-describedby="status-${squareData.Id}"
 					>
-						${GW.Controls.MineSquareEl.getCellContent(squareData)}
+						${ns.MineSquareEl.getCellContent(squareData)}
 					</gw-mine-square>
 				</td>
 			`).join("")}</tr>
@@ -346,7 +346,7 @@ window.GW = window.GW || {};
 	 * Updates the minefield buttons for the current action mode
 	 */
 	async function updateButtons() {
-		await GW.Controls.MineSquareEl.RenderCyclePromise;
+		await ns.MineSquareEl.ActionBatcher.BatchPromise;
 		
 		const curBtnLblEl = getCurBtnLblEl();
 		document.querySelectorAll("#tblField button").forEach(btn => {
@@ -396,7 +396,7 @@ window.GW = window.GW || {};
 	ns.selectMode = (mode) => {
 		document.querySelector(`[name="clickMode"][value="${mode}"]`).click();
 
-		GW.Controls.MineSquareEl.RenderCyclePromise.then(() => {
+		ns.MineSquareEl.ActionBatcher.BatchPromise.then(() => {
 			if(!document.getElementById("tblField").querySelector("button:focus-within")) {
 				GW.Controls.Toaster.showToast(mode, {invisible: true});
 			}

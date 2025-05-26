@@ -4,13 +4,11 @@
  */
  
 window.GW = window.GW || {};
-(function Controls(ns) {
+(function Minesweeper(ns) {
 	ns.MineSquareEl = class MineSquareEl extends HTMLElement {
 		static InstanceCount = 0; // Global count of instances created
 		static InstanceMap = {}; // Dynamic map of IDs to instances of the element currently attached
-		static StagedRenders = new Set();
-		static RenderCyclePromise = Promise.resolve();
-		static RenderCycleResolver = () => {};
+		static ActionBatcher = new GW.Gizmos.ActionBatcher("MineSquareEl");
 
 		//Element name (see MDN)
 		static Name = "gw-mine-square";
@@ -84,18 +82,6 @@ window.GW = window.GW || {};
 			return squareData.Sts === "dig" ? "spnDugSquareLabel" : "spnSquareLabel";
 		}
 
-		static #stageRender(instance) {
-			if(!this.StagedRenders.size) {
-				this.RenderCyclePromise = new Promise((resolve) => this.RenderCycleResolver = resolve);
-			}
-			this.StagedRenders.add(instance);
-			setTimeout(() => {
-				this.StagedRenders.forEach(instance => instance.#doRenderCycle());
-				this.StagedRenders.clear();
-				this.RenderCycleResolver();
-			}, 0);
-		}
-
 		InstanceId; // Identifier for this instance of the element
 		IsInitialized; // Whether the element has rendered its content
 
@@ -114,7 +100,7 @@ window.GW = window.GW || {};
 		 */
 		getData() {
 			const idAry = this.getAttribute("id").split("-");
-			return GW.Minesweeper.Data[idAry[1]][idAry[2]];
+			return ns.Data[idAry[1]][idAry[2]];
 		}
 
 		/**
@@ -122,7 +108,7 @@ window.GW = window.GW || {};
 		 */
 		setUpDataProxy() {
 			const idAry = this.getAttribute("id").split("-");
-			GW.Minesweeper.Data[idAry[1]][idAry[2]] = new Proxy(GW.Minesweeper.Data[idAry[1]][idAry[2]], {
+			ns.Data[idAry[1]][idAry[2]] = new Proxy(ns.Data[idAry[1]][idAry[2]], {
 				set(_target, _property, _value, _receiver) {
 					const returnVal = Reflect.set(...arguments);
 					this.MineSquare.renderContent();
@@ -156,10 +142,10 @@ window.GW = window.GW || {};
 
 		/** Invoked when the element is ready to render */
 		renderContent() {
-			MineSquareEl.#stageRender(this);
+			MineSquareEl.ActionBatcher.run(this.getAttribute("id"), this.#doRender)
 		}
 
-		#doRenderCycle() {
+		#doRender = () => {
 			const data = this.getData();
 
 			const hadFocus = this.matches(`:focus-within`);
@@ -168,11 +154,11 @@ window.GW = window.GW || {};
 			this.innerHTML = MineSquareEl.getCellContent(data);
 
 			if(hadFocus) {
-				GW.Minesweeper.focusFieldSquare(this.parentElement);
+				ns.focusFieldSquare(this.parentElement);
 			}
 		}
 	}
 	if(!customElements.get(ns.MineSquareEl.Name)) {
 		customElements.define(ns.MineSquareEl.Name, ns.MineSquareEl);
 	}
-}) (window.GW.Controls = window.GW.Controls || {});
+}) (window.GW.Minesweeper = window.GW.Minesweeper || {});
