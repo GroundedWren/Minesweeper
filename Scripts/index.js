@@ -432,6 +432,7 @@ window.addEventListener("load", () => {
 	}
 	
 	document.getElementById("cbxBigSquares").checked = localStorage.getItem("use-big-squares") === "true";
+	document.getElementById("cbxShowGridlines").checked = localStorage.getItem("show-gridlines") === "true";
 
 	const ngSize = JSON.parse(localStorage.getItem("new-game-size")) || {
 		Rows: 10,

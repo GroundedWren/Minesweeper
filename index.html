@@ -53,6 +53,13 @@
 						></gw-switch>
 						Big squares
 					</label>
+					<label class="text-after">
+						<gw-switch><input id="cbxShowGridlines"
+							type="checkbox"
+							oninput="localStorage.setItem('show-gridlines', event.target.checked ? 'true' : 'false')"
+						></gw-switch>
+						Show gridlines
+					</label>
 				</div>
 			</details>
 			<button onclick="document.getElementById('diaNew').showModal()">New Game</button>
