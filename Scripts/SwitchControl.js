@@ -26,6 +26,10 @@ window.GW.Controls = window.GW.Controls || {};
 						display: inline-flex;
 						min-width: 1em;
 
+						> * {
+							flex-grow: 1;
+						}
+
 						input {
 							display: none;
 						}
@@ -53,7 +57,7 @@ window.GW.Controls = window.GW.Controls || {};
 			return `gw-switch-${this.InstanceId}-${key}`;
 		}
 		getRef(key) {
-			return this.querySelector(`#${this.getId(key)}`);
+			return this.querySelector(`#${CSS.escape(this.getId(key))}`);
 		}
 
 		get InputEl() {
@@ -66,7 +70,11 @@ window.GW.Controls = window.GW.Controls || {};
 		connectedCallback() {
 			if(!this.IsInitialized) {
 				if(document.readyState === "loading") {
-					document.addEventListener("DOMContentLoaded", this.renderContent);
+					document.addEventListener("DOMContentLoaded", () => {
+						if(!this.IsInitialized) {
+							this.renderContent();
+						}
+					});
 				}
 				else {
 					this.renderContent();
@@ -77,7 +85,7 @@ window.GW.Controls = window.GW.Controls || {};
 			}
 		}
 
-		renderContent = () => {		
+		renderContent() {		
 			this.id = this.getId("switch");
 
 			Object.entries({
@@ -109,7 +117,7 @@ window.GW.Controls = window.GW.Controls || {};
 			this.renderA11yProps();
 
 			this.IsInitialized = true;
-		};
+		}
 
 		renderA11yProps() {
 			this.copyInputA11y();
