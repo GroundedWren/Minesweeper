@@ -41,7 +41,10 @@ File Description: CSS Variables
 	--sqr-7-color: #400040;
 	--sqr-8-bkg-color: #660000;
 	--sqr-8-color: #ff9494;
-	--sqr-border-color: #d3d3d3;
+	--sqr-border-color-start: #d3d3d3;
+	--sqr-border-color-end: #848484;
+	--sqr-border-selected-color-start: #a7e6ff;
+	--sqr-border-selected-color-end: #597d87;
 
 	input {
 		color-scheme: light;
@@ -72,7 +75,7 @@ File Description: CSS Variables
 		--sqr-0-bkg-color: #000000;
 		--sqr-1-bkg-color: #000000;
 		--sqr-1-color: #ffffff;
-		--sqr-2-bkg-color: #0000ff;
+		--sqr-2-bkg-color: #0000cc;
 		--sqr-2-color: #dfdfff;
 		--sqr-3-bkg-color: #008000;
 		--sqr-3-color: #ddffdd;
@@ -86,7 +89,10 @@ File Description: CSS Variables
 		--sqr-7-color: #ff80c0;
 		--sqr-8-bkg-color: #ff9494;
 		--sqr-8-color: #660000;
-		--sqr-border-color: #303030;
+		--sqr-border-color-start: #848484;
+		--sqr-border-color-end: #000000;
+		--sqr-border-selected-color-start: #3558e6;
+		--sqr-border-selected-color-end: #0e173d;
 
 		input {
 			color-scheme: dark;

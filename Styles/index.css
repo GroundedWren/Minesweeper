@@ -174,9 +174,17 @@ gw-switch {
 	}
 
 	button {
-		border: 2.5px outset var(--sqr-border-color);
+		border: 2.5px solid;
+		border-block-start-color: var(--sqr-border-color-start);
+		border-inline-start-color: var(--sqr-border-color-start);
+		border-block-end-color: var(--sqr-border-color-end);
+		border-inline-end-color: var(--sqr-border-color-end);
+
 		&[aria-pressed="true"] {
-			border-color: var(--selected-color);
+			border-block-start-color: var(--sqr-border-selected-color-start);
+			border-inline-start-color: var(--sqr-border-selected-color-start);
+			border-block-end-color: var(--sqr-border-selected-color-end);
+			border-inline-end-color: var(--sqr-border-selected-color-end);
 		}
 	}
 
