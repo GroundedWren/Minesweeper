@@ -249,6 +249,29 @@ form, article {
 		text-align: start;
 	}
 
+	.input-grid {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		row-gap: 5px;
+
+		> label {
+			text-align: end;
+			display: contents;
+
+			&:has(:focus-visible) {
+				> span {
+					text-decoration-line: underline;
+					text-decoration-style: solid;
+					text-decoration-thickness: 2px;
+					text-decoration-color: var(--focus-color);
+				}
+				input {
+					border-color: var(--focus-color);
+				}
+			}
+		}
+	}
+
 	.footer {
 		width: 100%;
 		margin-top: 4px;
@@ -304,4 +327,5 @@ button {
 input:is([type="number"], [type="string"]) {
 	min-height: 24px;
 	min-width: 24px;
+	line-height: 18px;;
 }
