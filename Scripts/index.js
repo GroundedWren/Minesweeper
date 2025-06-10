@@ -109,6 +109,15 @@ window.GW = window.GW || {};
 		ns.focusFieldSquare(document.getElementById(`cell-${targetRow}-${targetCol}`));
 	}
 
+	function getActiveSquare() {
+		return document.getElementById(getActiveSquareId());
+	}
+
+	function getActiveSquareId() {
+		const tblField = document.getElementById("tblField");
+		return `cell-${tblField.getAttribute("data-row")}-${tblField.getAttribute("data-col")}`
+	}
+
 	/**
 	 * Handles siting focus in the minefield
 	 * @param {KeyboardEvent} event 
@@ -117,9 +126,7 @@ window.GW = window.GW || {};
 		let focusTarget = event.target;
 		const tblField = document.getElementById("tblField");
 		if(focusTarget === tblField) {
-			ns.focusFieldSquare(tblField.querySelector(
-				`#cell-${tblField.getAttribute("data-row")}-${tblField.getAttribute("data-col")}`
-			));
+			ns.focusFieldSquare(getActiveSquare());
 			tblField.setAttribute("tabindex", "-1");
 		}
 		else {
@@ -138,6 +145,12 @@ window.GW = window.GW || {};
 	 */
 	ns.renderGame = function renderGame() {
 		const tbodyField = document.getElementById("tbodyField");
+		
+		let prevCellId = null;
+		if(tbodyField.matches(`:focus-within`)) {
+			prevCellId = getActiveSquareId();
+		}
+
 		tbodyField.innerHTML = ns.Data.map(dataRow => `
 			<tr>${dataRow.map(squareData => `
 				<td id="cell-${squareData.Id}"
@@ -159,7 +172,14 @@ window.GW = window.GW || {};
 		updateButtons();
 		updateFace();
 
-		localStorage.setItem("data", JSON.stringify(GW.Minesweeper.Data));
+		localStorage.setItem("data", JSON.stringify(ns.Data));
+		last.Data = [];
+
+		if(prevCellId) {
+			ns.focusFieldSquare(document.getElementById(prevCellId));
+		}
+
+		setTimeout(() => document.getElementById("shortsField").currentLevel = null, 0);
 	}
 
 	/**
@@ -257,6 +277,9 @@ window.GW = window.GW || {};
 	 * @param {Event} event 
 	 */
 	ns.onSquareActivate = (event) => {
+		last.Data = JSON.parse(localStorage.getItem("data"));
+		last.HasArmor = localStorage.getItem("has-armor");
+
 		let tdEl = event.target;
 		while(tdEl.tagName !== "TD") {
 			tdEl = tdEl.parentElement;
@@ -276,7 +299,7 @@ window.GW = window.GW || {};
 			updateButtons();
 		}
 
-		localStorage.setItem("data", JSON.stringify(GW.Minesweeper.Data));
+		localStorage.setItem("data", JSON.stringify(ns.Data));
 	};
 
 	/**
@@ -403,15 +426,53 @@ window.GW = window.GW || {};
 		});
 	};
 
+	const last = new Proxy({Data: [], HasArmor: false}, {
+		set(_target, property, value, _receiver) {
+			switch(property) {
+				case "Data":
+					const btnUndo = document.getElementById("btnUndo");
+					if(value && value.length) {
+						btnUndo.removeAttribute("disabled");
+					}
+					else {
+						if(btnUndo.matches(":focus-within")) {
+							ns.focusFieldSquare(getActiveSquare());
+						}
+						btnUndo.setAttribute("disabled", "true");
+					}
+					break;
+			}
+			return Reflect.set(...arguments);
+		}
+	});
+
+	/**
+	 * Undoes the last action
+	 */
+	ns.undo = () => {
+		if(!last.Data || !last.Data.length) {
+			return;
+		}
+		ns.Data = last.Data;
+		last.Data = [];
+		localStorage.setItem("has-armor", last.HasArmor);
+		ns.renderGame();
+	};
+
 	/**
 	 * Digs all squares
 	 */
 	ns.revealBoard = () => {
+		last.Data = JSON.parse(localStorage.getItem("data"));
+		last.HasArmor = localStorage.getItem("has-armor");
+
 		for(let i = 0; i < ns.Data.length; i++) {
 			for(let j = 0; j < ns.Data[i].length; j++) {
 				ns.Data[i][j].Sts = "dig";
 			}
 		}
+		localStorage.setItem("data", JSON.stringify(ns.Data));
+
 		setTimeout(() => GW.Controls.Toaster.showToast("Board revealed!", {invisible: true}), 0);
 	};
 }) (window.GW.Minesweeper = window.GW.Minesweeper || {});

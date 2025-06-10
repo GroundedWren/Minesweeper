@@ -88,8 +88,8 @@
 					<gw-icon iconKey="circle-question" name="Unknown"></gw-icon>
 				</label>
 			</fieldset>
-			<gw-shortcuts role="application" aria-describedby="asiTblField"
-			code_0="ArrowRight"
+			<gw-shortcuts id="shortsField" role="application" aria-describedby="asiTblField"
+				code_0="ArrowRight"
 				handler_0="GW.Minesweeper.tblFieldOnKbdNav(event)"
 				info_0="Move right a column"
 
@@ -144,6 +144,10 @@
 				code_13="3"
 				handler_13="GW.Minesweeper.selectMode('unknown')"
 				info_13="Switches to mark unknown mode"
+
+				code_14="Alt+Z"
+				handler_14="GW.Minesweeper.undo()"
+				info_14="Undoes the last action"
 			>
 				<span id="spnDataGrid" class="hidden">Data Grid.</span>
 				<div class="scroll-container" tabindex="-1">
@@ -175,6 +179,10 @@
 				<span id="spnMineLabel" class="hidden">Mine. Boom!</span>
 			</gw-shortcuts>
 			<div id="divFieldFooter">
+				<button id="btnUndo"
+					disabled="true"
+					onclick="GW.Minesweeper.undo()"
+				><gw-icon iconKey="rotate-left" name="Undo"></gw-icon></button>
 				<button onclick="GW.Minesweeper.revealBoard()">Reveal Board</button>
 			</div>
 		</section>
