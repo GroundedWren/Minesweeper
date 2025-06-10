@@ -114,6 +114,8 @@ gw-switch {
 
 	padding-block: 5px;
 	padding-inline: 5px;
+
+	outline: none !important;
 }
 
 #tblField {
@@ -122,6 +124,10 @@ gw-switch {
 	margin-inline: auto;
 
 	border: 1px solid var(--border-color);
+
+	* {
+		outline-width: 2.5px !important;
+	}
 
 	td {
 		padding: 0;
@@ -244,7 +250,6 @@ gw-switch {
 
 form, article {
 	padding: 4px;
-	border-inline-start: 3px solid var(--accent-color);
 	background-color: var(--background-color-2);
 
 	h1, h2, h3, h4, h5, h6 {
@@ -301,10 +306,6 @@ dialog {
 		background-color: var(--background-color-2);
 		opacity: 0.75;
 	}
-
-	> form {
-		border: none;
-	}
 }
 
 #diaNew {
@@ -313,6 +314,48 @@ dialog {
 		flex-direction: column;
 		gap: 5px;
 		min-width: 200px;
+	}
+}
+
+#diaInfo > article {
+	max-width: 900px;
+
+	display: grid;
+	grid-template-columns: 30px 1fr;
+	grid-template-rows: 1fr auto;
+	column-gap: 5px;
+
+	gw-icon {
+		grid-column: 1;
+		grid-row: 1 / span 2;
+
+		&:focus {
+			outline: none !important;
+			background-color: var(--selected-color);
+		}
+
+		.gw-icon {
+			width: initial;
+			height: initial;
+		}
+	}
+	article {
+		grid-column: 2;
+		grid-row: 1;
+
+		:is(h1, h2, h3, h4, h5, h6) + p {
+			margin-block-start: 0;
+		}
+	}
+	footer {
+		grid-row: 2;
+		grid-column: 2;
+
+		border: none;
+
+		display: flex;
+		justify-content: flex-end;
+		gap: 10px;
 	}
 }
 

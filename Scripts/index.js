@@ -303,6 +303,33 @@ window.GW = window.GW || {};
 	};
 
 	/**
+	 * "Aigs around" all adjacent unmarked squares
+	 * @param {Event} event context menu event
+	 */
+	ns.onSquareContextmenu = (event) => {
+		last.Data = JSON.parse(localStorage.getItem("data"));
+		last.HasArmor = localStorage.getItem("has-armor");
+
+		let tdEl = event.target;
+		while(tdEl.tagName !== "TD") {
+			tdEl = tdEl.parentElement;
+		}
+		const [_, row, col] = tdEl.id.split("-").map(item => parseInt(item));
+		SURROUNDING_DELTAS.forEach(deltas => {
+			const coords = {Row: row + deltas[0], Col: col + deltas[1] };
+			if(ns.Data[coords.Row]
+				&& ns.Data[coords.Row][coords.Col]
+				&& ns.Data[coords.Row][coords.Col].Sts === null
+			) {
+				digAround(coords.Row, coords.Col);
+			}
+		});
+
+		localStorage.setItem("data", JSON.stringify(ns.Data));
+		event.preventDefault();
+	};
+
+	/**
 	 * Auto-reveals surrounding squares as appropriate
 	 * @param {number} row Starting square's row
 	 * @param {number} col Starting square's col
@@ -315,17 +342,17 @@ window.GW = window.GW || {};
 			localStorage.setItem("has-armor", "false");
 		}
 
-		const cellArr = [{row: row, col: col }];
+		const cellArr = [{Row: row, Col: col }];
 		while(cellArr.length) {
 			const coords = cellArr.pop();
-			if(ns.Data[coords.row]
-				&& ns.Data[coords.row][coords.col]
-				&& ns.Data[coords.row][coords.col].Sts !== "dig"
+			if(ns.Data[coords.Row]
+				&& ns.Data[coords.Row][coords.Col]
+				&& ns.Data[coords.Row][coords.Col].Sts !== "dig"
 			) {
-				ns.Data[coords.row][coords.col].Sts = "dig";
-				if(ns.Data[coords.row][coords.col].Cnt === 0) {
+				ns.Data[coords.Row][coords.Col].Sts = "dig";
+				if(ns.Data[coords.Row][coords.Col].Cnt === 0) {
 					SURROUNDING_DELTAS.forEach(
-						deltas => cellArr.push({row: coords.row + deltas[0], col: coords.col + deltas[1]})
+						deltas => cellArr.push({Row: coords.Row + deltas[0], Col: coords.Col + deltas[1]})
 					);
 				}
 			}

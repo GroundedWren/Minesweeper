@@ -34,6 +34,9 @@
 		</div>
 		<div><h1>Minesweeper</h1></div>
 		<div id="mainHeaderRight">
+			<button onclick="document.getElementById('diaInfo').showModal()">
+				<gw-icon iconKey="circle-info" name="Instructions"></gw-icon>
+			</button>
 			<details>
 				<summary>
 					<gw-icon iconKey="gear" name="Settings"></gw-icon>
@@ -148,6 +151,10 @@
 				code_14="Control+Z"
 				handler_14="GW.Minesweeper.undo()"
 				info_14="Undoes the last action"
+
+				code_15="Shift+F10"
+				handler_15="GW.Minesweeper.onSquareContextmenu(event)"
+				info_15="(Dug cells only) Digs adjacent unmarked cells"
 			>
 				<span id="spnDataGrid" class="hidden">Data Grid.</span>
 				<div class="scroll-container" tabindex="-1">
@@ -195,6 +202,59 @@
 			<figcaption>Created by Vera in 2024</figcaption>
 		</figure>
 	</footer>
+	<dialog id="diaInfo">
+		<article>
+			<gw-icon iconKey="circle-info" name="info" tabindex="-1" role="heading" aria-level="1" autofocus></gw-icon>
+			<article>
+				<h2>Intro</h2>
+				<p>
+					Welcome to the Grounded Wren Minesweeper clone!
+				</p>
+				<p>
+					<a href="https://en.wikipedia.org/wiki/Minesweeper_(video_game)" target="_blank">Minesweeper</a> is an old game, going back to (at latest) the 
+					<a href="https://minesweepergame.com/history/windows-entertainment-pack.php" target="_blank">Windows Entertainment Pack in 1990</a> with many variations
+					created thereafter. I first played Minesweeper on my Grandmother's computer, which I think was running Windows 98. Along with <q>3D Pinball Space Cadet</q>,
+					it was one of my biggest computer timesinks while I was a young child.
+				</p>
+				<p>
+					Minesweeper sadly no longer comes installed on Windows computers, and in searching for a way to play online I was unable to find a version that worked well
+					 with screen readers, or even with good keyboard navigation. So, I made my own clone!
+				</p>
+				<h2>Basics</h2>
+				<p>
+					Minesweeper is a puzzle game where the goal is to identify, or <q>flag</q>, all of the mines on the board. To do so, you may <q>dig</q> squares to reveal
+					 how many mines they are adjacent to, or a mine if you are unlucky. If there are no mines adjacent to a square you dig, all adjacent squares will also
+					 be dug automatically, cascading outwards until there are mines nearby. Based on the information about adjacent mines, you can try to deduce where the mines
+					 are hiding.
+				</p>
+				<h3>Controls</h3>
+				<p>
+					You may take actions on each square which has not been dug. The three main actions are <q>dig</q>, <q>flag</q>, and <q>mark unknown</q>.
+					 You may switch between these actions using the <q>Mode</q> selector.
+				</p>
+				<p>
+					This game may be operated with a mouse, a keyboard, or both. With a mouse, left-clicking will act on the target square, and right-clicking on a dug square
+					 will dig all adjacent squares which are not flagged or marked unknown. With a keyboard, the minefield behaves as
+					 a <a href="https://www.w3.org/WAI/ARIA/apg/patterns/grid/examples/data-grids/" target="_blank">Data Grid</a>. All keyboard shortcuts are available to review
+					 by pressing <kbd>Alt</kbd>+<kbd>S</kbd> when the minefield is focused.
+				</p>
+				<h2>Other Notes</h2>
+				<p>
+					This clone departs from classic Minesweeper in a few notable ways. First, there is no timer, since I've found that aspect to detract from my enjoyment.
+					 Second, games are generated with a mine rate percentage rather than a fixed number of mines.
+					 Third, your first dig action is guaranteed to have no adjacent mines.
+				</p>
+				<p>
+					One important feature to call out is that the game state is saved automatically to your browser's storage. This means you can close and re-open the page
+					 without losing your progress.
+				</p>
+			</article>
+			<footer>
+				<a class="full" href="mailto:vera@groundedwren.com?subject=Minesweeper">Give feedback</a>
+				<button onclick="document.getElementById('diaInfo').close();">Close</button>
+			</footer>
+		</article>
+	</dialog>
 	<dialog id="diaNew">
 		<form aria-labelledby="hNew" onsubmit="GW.Minesweeper.onNewGame(event); document.getElementById('diaNew').close();">
 			<h2 id="hNew">New Game</h2>

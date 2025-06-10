@@ -68,6 +68,7 @@ window.GW = window.GW || {};
 						   tabindex="-1"
 						   role="figure"
 						   aria-labelledby="spnFindings${squareData.Id} spnMinesNearbyLabel"
+						   oncontextmenu="GW.Minesweeper.onSquareContextmenu(event)"
 					   ><span id="spnFindings${squareData.Id}">${squareData.Cnt}</span></div>`;
 			   }
 		   }
