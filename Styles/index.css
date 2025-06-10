@@ -268,13 +268,15 @@ form, article {
 
 			&:has(:focus-visible) {
 				> span {
-					text-decoration-line: underline;
-					text-decoration-style: solid;
-					text-decoration-thickness: 2px;
-					text-decoration-color: var(--focus-color);
+					background-color: var(--selected-color);
 				}
 				input {
-					border-color: var(--focus-color);
+					outline-width: 2px !important;
+					outline-color: var(--focus-color) !important;
+					outline-style: solid !important;
+					outline-offset: 1px !important;
+					position: relative !important;
+					z-index: 100 !important;
 				}
 			}
 		}
