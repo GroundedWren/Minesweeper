@@ -40,6 +40,7 @@ body:has(#cbxShowGridlines:checked) {
 		border: 1px solid var(--border-color);
 		min-width: 200px;
 		right: 0;
+		z-index: 2;
 
 		display: flex;
 		flex-direction: column;
@@ -97,6 +98,10 @@ gw-switch {
 	justify-content: space-between;
 	max-width: 600px;
 	margin-inline: auto;
+	background-color: var(--background-color);
+	> legend {
+		background-color: var(--background-color);
+	}
 
 	> label {
 		padding-block: 5px;
@@ -116,6 +121,38 @@ gw-switch {
 	padding-inline: 5px;
 
 	outline: none !important;
+	z-index: 0 !important;
+}
+
+#divFieldFooter {
+	display: flex;
+	justify-content: center;
+	gap: 25px;
+	background-color: var(--background-color);
+	padding-block-start: 2px;
+
+	.scroll-btn {
+		display: none;
+	}
+}
+
+@media(max-height: 912px) {
+	#fsetMode {
+		position: sticky;
+		top: 0;
+		z-index: 1;
+	}
+	.scroll-container:has(> #tblField) {
+		max-height: initial;
+	}
+	#divFieldFooter {
+		position: sticky;
+		bottom: 0;
+
+		.scroll-btn {
+			display: block;
+		}
+	}
 }
 
 #tblField {
@@ -352,6 +389,8 @@ dialog {
 		grid-column: 2;
 
 		border: none;
+		position: sticky;
+		bottom: 0;
 
 		display: flex;
 		justify-content: flex-end;
@@ -363,12 +402,6 @@ dialog {
 	text-align: center;
 }
 
-#divFieldFooter {
-	display: flex;
-	justify-content: center;
-	gap: 25px;
-}
-
 label {
 	user-select: none;
 }
@@ -376,6 +409,7 @@ label {
 button {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 }
 
 input:is([type="number"], [type="string"]) {

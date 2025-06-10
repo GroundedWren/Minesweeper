@@ -502,6 +502,14 @@ window.GW = window.GW || {};
 
 		setTimeout(() => GW.Controls.Toaster.showToast("Board revealed!", {invisible: true}), 0);
 	};
+
+	/**
+	 * Scrolls the minefield
+	 * @param {String} direction "left" or "right"
+	 */
+	ns.horizScroll = (direction) => {
+		document.getElementById("scrollMinefield").scrollLeft += ((direction === "left" ? -1 : 1) * (document.getElementById("cbxBigSquares").checked ? 50 : 30));
+	}
 }) (window.GW.Minesweeper = window.GW.Minesweeper || {});
 
 window.addEventListener("load", () => {

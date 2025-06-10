@@ -157,7 +157,7 @@
 				info_15="(Dug cells only) Digs adjacent unmarked cells"
 			>
 				<span id="spnDataGrid" class="hidden">Data Grid.</span>
-				<div class="scroll-container" tabindex="-1">
+				<div id="scrollMinefield" class="scroll-container" tabindex="-1">
 					<table id="tblField"
 						aria-labelledby="spnFieldLabel spnDataGrid"
 						role="grid"
@@ -186,11 +186,13 @@
 				<span id="spnMineLabel" class="hidden">Mine. Boom!</span>
 			</gw-shortcuts>
 			<div id="divFieldFooter">
+				<button class="scroll-btn" onclick="GW.Minesweeper.horizScroll('left')">←</button>
 				<button id="btnUndo"
 					disabled="true"
 					onclick="GW.Minesweeper.undo()"
 				><gw-icon iconKey="rotate-left" name="Undo"></gw-icon></button>
 				<button onclick="GW.Minesweeper.revealBoard()">Reveal Board</button>
+				<button class="scroll-btn" onclick="GW.Minesweeper.horizScroll('right')">→</button>
 			</div>
 		</section>
 	</main>
