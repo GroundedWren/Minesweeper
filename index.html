@@ -186,13 +186,17 @@
 				<span id="spnMineLabel" class="hidden">Mine. Boom!</span>
 			</gw-shortcuts>
 			<div id="divFieldFooter">
-				<button class="scroll-btn" onclick="GW.Minesweeper.horizScroll('left')">←</button>
+				<button class="scroll-btn" onclick="GW.Minesweeper.horizScroll('left')">
+					<gw-icon iconKey="chevron-left" name="Scroll left"></gw-icon>
+				</button>
 				<button id="btnUndo"
 					disabled="true"
 					onclick="GW.Minesweeper.undo()"
 				><gw-icon iconKey="rotate-left" name="Undo"></gw-icon></button>
 				<button onclick="GW.Minesweeper.revealBoard()">Reveal Board</button>
-				<button class="scroll-btn" onclick="GW.Minesweeper.horizScroll('right')">→</button>
+				<button class="scroll-btn" onclick="GW.Minesweeper.horizScroll('right')">
+					<gw-icon iconKey="chevron-right" name="Scroll right"></gw-icon>
+				</button>
 			</div>
 		</section>
 	</main>
@@ -222,7 +226,7 @@
 					Minesweeper sadly no longer comes installed on Windows computers, and in searching for a way to play online I was unable to find a version that worked well
 					 with screen readers, or even with good keyboard navigation. So, I made my own clone!
 				</p>
-				<h2>Basics</h2>
+				<h2>Gameplay</h2>
 				<p>
 					Minesweeper is a puzzle game where the goal is to identify, or <q>flag</q>, all of the mines on the board. To do so, you may <q>dig</q> squares to reveal
 					 how many mines they are adjacent to, or a mine if you are unlucky. If there are no mines adjacent to a square you dig, all adjacent squares will also
