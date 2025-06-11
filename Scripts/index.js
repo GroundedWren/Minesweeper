@@ -303,10 +303,10 @@ window.GW = window.GW || {};
 	};
 
 	/**
-	 * "Aigs around" all adjacent unmarked squares
+	 * "Digs around" all adjacent unmarked squares
 	 * @param {Event} event context menu event
 	 */
-	ns.onSquareContextmenu = (event) => {
+	ns.batchReveal = (event) => {
 		last.Data = JSON.parse(localStorage.getItem("data"));
 		last.HasArmor = localStorage.getItem("has-armor");
 
@@ -437,6 +437,14 @@ window.GW = window.GW || {};
 	 */
 	function getCurAction() {
 		return document.querySelector("[name='clickMode']:checked").value;
+	}
+
+	ns.cycleMode = (event) => {
+		event.preventDefault();
+
+		const modeEls = [...document.querySelectorAll(`[name="clickMode"]`)];
+		const newModeIdx = (modeEls.findIndex(element => element.matches(`:checked`)) + 1)  % modeEls.length;
+		ns.selectMode(modeEls[newModeIdx].value);
 	}
 
 	/**

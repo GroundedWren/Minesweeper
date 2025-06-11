@@ -153,8 +153,10 @@
 				info_14="Undoes the last action"
 
 				code_15="Shift+F10"
-				handler_15="GW.Minesweeper.onSquareContextmenu(event)"
+				handler_15="GW.Minesweeper.batchReveal(event)"
 				info_15="(Dug cells only) Digs adjacent unmarked cells"
+
+				oncontextmenu="GW.Minesweeper.cycleMode(event)"
 			>
 				<span id="spnDataGrid" class="hidden">Data Grid.</span>
 				<div id="scrollMinefield" class="scroll-container" tabindex="-1">
@@ -239,8 +241,8 @@
 					 You may switch between these actions using the <q>Mode</q> selector.
 				</p>
 				<p>
-					This game may be operated with a mouse, a keyboard, or both. With a mouse, left-clicking will act on the target square, and right-clicking on a dug square
-					 will dig all adjacent squares which are not flagged or marked unknown. With a keyboard, the minefield behaves as
+					This game may be operated with a mouse, a keyboard, or both. With a mouse, left-clicking will act on the target square, double-clicking on a dug square
+					 will dig all adjacent squares which are not flagged or marked unknown, and right-clicking will cycle the mode. With a keyboard, the minefield behaves as
 					 a <a href="https://www.w3.org/WAI/ARIA/apg/patterns/grid/examples/data-grids/" target="_blank">Data Grid</a>. All keyboard shortcuts are available to review
 					 by pressing <kbd>Alt</kbd>+<kbd>S</kbd> when the minefield is focused.
 				</p>
