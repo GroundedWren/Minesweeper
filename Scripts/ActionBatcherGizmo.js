@@ -82,32 +82,26 @@ window.GW = window.GW || {};
 
 		BatchPromise = Promise.resolve(); // A promsie which resolves when the staged actions run
 		#BatchPromiseResolver = () => {};
-		#FlushTimerRunning = false;
 
+		#Listeners = new Map();
+		
+		#IntervalMs = 0;
+		#FlushTimerRunning = false;
 		#IsBlocked = false;
 
 		/**
 		 * Creates an ActionBatcher
-		 * @param name The batcher's identifier
+		 * @param {String} name The batcher's identifier
+		 * @param {Number} intervalMs Action delay in milliseconds
 		 */
-		constructor(name) {
+		constructor(name, intervalMs) {
 			ActionBatcher.#InstanceCount++;
 			this.Name = `ActionBatcher-${ActionBatcher.#InstanceCount}-${name || ""}`;
+			this.#IntervalMs = intervalMs || 0;
 		}
 
 		/**
-		 * Stages an action but does not attempt to flush actions
-		 * @param key Action identifier
-		 * @param action Callback
-		 */
-		stage(key, action) {
-			this.#log(`Action "${key}" ${this.#StagedActions.has(key) ? "re-" : ""}staged`);
-			this.#StagedActions.set(key, action);
-			this.BatchPromise = new Promise((resolve) => this.#BatchPromiseResolver = resolve);
-		}
-
-		/**
-		 * Stages an action and attempts to flush actions after a 0ms timer
+		 * Stages an action and attempts to flush actions after a timer
 		 * @param key Action identifier
 		 * @param action Callback
 		 */
@@ -123,12 +117,23 @@ window.GW = window.GW || {};
 			}
 		}
 
+		/**
+		 * Stages an action but does not attempt to flush actions
+		 * @param key Action identifier
+		 * @param action Callback
+		 */
+		stage(key, action) {
+			this.#log(`Action "${key}" ${this.#StagedActions.has(key) ? "re-" : ""}staged`);
+			this.#StagedActions.set(key, action);
+			this.BatchPromise = new Promise((resolve) => this.#BatchPromiseResolver = resolve);
+		}
+
 		#startFlushTimer() {
-			if(!this.#StagedActions.size || this.#FlushTimerRunning) {
+			if(this.#FlushTimerRunning) {
 				return;
 			}
 
-			this.#log(`Starting flush timer`);
+			this.#log(`Starting ${this.#IntervalMs}ms flush timer`);
 			this.#FlushTimerRunning = true;
 			setTimeout(() => {
 				this.#FlushTimerRunning = false;
@@ -149,6 +154,11 @@ window.GW = window.GW || {};
 				action();
 			});
 			this.#StagedActions.clear();
+
+			this.#Listeners.forEach((delegate, key) => {
+				this.#log(`Invoking listener: "${key}"`);
+				delegate();
+			});
 
 			this.#log(`Resolving batch promise with true`);
 			this.#BatchPromiseResolver(true);
@@ -172,6 +182,25 @@ window.GW = window.GW || {};
 			this.#IsBlocked = false;
 
 			this.#startFlushTimer();
+		}
+
+		/**
+		 * Adds a listener to be invoked when a batch is flushed
+		 * @param {String} key A unique identifier
+		 * @param {Function} delegate A callback function
+		 */
+		addListener(key, delegate) {
+			this.#Listeners.set(key, delegate);
+			this.#log(`Added a listener: "${key}"`);
+		}
+
+		/**
+		 * Deletes a listener
+		 * @param {String} key A unique identifier
+		 */
+		removeListener(key) {
+			this.#Listeners.delete(key);
+			this.#log(`Removed a listener: "${key}"`);
 		}
 
 		/**
