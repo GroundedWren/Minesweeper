@@ -6,6 +6,8 @@
 window.GW = window.GW || {};
 (function Minesweeper(ns) {
 	const SURROUNDING_DELTAS = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+	ns.Data = [];
+	ns.HasArmor = true;
 
 	/**
 	 * Creates and renders a new game
@@ -20,9 +22,10 @@ window.GW = window.GW || {};
 			MineRate: elements["numMineRate"].value,
 		};
 		localStorage.setItem("new-game-size", JSON.stringify(ngSize));
-		localStorage.setItem("has-armor", "true");
 
 		ns.generateGameData(ngSize.Rows, ngSize.Columns, ngSize.MineRate / 100.0);
+		ns.HasArmor = true;
+
 		ns.renderGame();
 		ns.selectMode("dig");
 	}
@@ -144,6 +147,9 @@ window.GW = window.GW || {};
 	 * Renders the minefield
 	 */
 	ns.renderGame = function renderGame() {
+		last.Data = [];
+		localStorage.removeItem("data");
+
 		const tbodyField = document.getElementById("tbodyField");
 		
 		let prevCellId = null;
@@ -172,14 +178,14 @@ window.GW = window.GW || {};
 		updateButtons();
 		updateFace();
 
-		localStorage.setItem("data", JSON.stringify(ns.Data));
-		last.Data = [];
-
 		if(prevCellId) {
 			ns.focusFieldSquare(document.getElementById(prevCellId));
 		}
 
 		setTimeout(() => document.getElementById("shortsField").currentLevel = null, 0);
+
+		ns.MineSquareEl.ActionBatcher.addListener("onRender", onRender);
+		ns.MineSquareEl.ActionBatcher.run();
 	}
 
 	/**
@@ -277,9 +283,6 @@ window.GW = window.GW || {};
 	 * @param {Event} event 
 	 */
 	ns.onSquareActivate = (event) => {
-		last.Data = JSON.parse(localStorage.getItem("data"));
-		last.HasArmor = localStorage.getItem("has-armor");
-
 		let tdEl = event.target;
 		while(tdEl.tagName !== "TD") {
 			tdEl = tdEl.parentElement;
@@ -298,8 +301,6 @@ window.GW = window.GW || {};
 			ns.Data[row][col].Sts = action;
 			updateButtons();
 		}
-
-		localStorage.setItem("data", JSON.stringify(ns.Data));
 	};
 
 	/**
@@ -307,9 +308,6 @@ window.GW = window.GW || {};
 	 * @param {Event} event context menu event
 	 */
 	ns.batchReveal = (event) => {
-		last.Data = JSON.parse(localStorage.getItem("data"));
-		last.HasArmor = localStorage.getItem("has-armor");
-
 		let tdEl = event.target;
 		while(tdEl.tagName !== "TD") {
 			tdEl = tdEl.parentElement;
@@ -325,7 +323,6 @@ window.GW = window.GW || {};
 			}
 		});
 
-		localStorage.setItem("data", JSON.stringify(ns.Data));
 		event.preventDefault();
 	};
 
@@ -335,11 +332,11 @@ window.GW = window.GW || {};
 	 * @param {number} col Starting square's col
 	 */
 	function digAround(row, col) {
-		if(localStorage.getItem("has-armor") === "true") {
+		if(ns.HasArmor === true) {
 			SURROUNDING_DELTAS.concat([[0, 0]]).forEach(
 				deltas => diffuseSquare(row + deltas[0], col + deltas[1])
 			);
-			localStorage.setItem("has-armor", "false");
+			ns.HasArmor = false;
 		}
 
 		const cellArr = [{Row: row, Col: col }];
@@ -488,9 +485,9 @@ window.GW = window.GW || {};
 		if(!last.Data || !last.Data.length) {
 			return;
 		}
+
 		ns.Data = last.Data;
-		last.Data = [];
-		localStorage.setItem("has-armor", last.HasArmor);
+		ns.HasArmor = last.HasArmor;
 		ns.renderGame();
 	};
 
@@ -498,15 +495,11 @@ window.GW = window.GW || {};
 	 * Digs all squares
 	 */
 	ns.revealBoard = () => {
-		last.Data = JSON.parse(localStorage.getItem("data"));
-		last.HasArmor = localStorage.getItem("has-armor");
-
 		for(let i = 0; i < ns.Data.length; i++) {
 			for(let j = 0; j < ns.Data[i].length; j++) {
 				ns.Data[i][j].Sts = "dig";
 			}
 		}
-		localStorage.setItem("data", JSON.stringify(ns.Data));
 
 		setTimeout(() => GW.Controls.Toaster.showToast("Board revealed!", {invisible: true}), 0);
 	};
@@ -517,7 +510,15 @@ window.GW = window.GW || {};
 	 */
 	ns.horizScroll = (direction) => {
 		document.getElementById("scrollMinefield").scrollLeft += ((direction === "left" ? -1 : 1) * (document.getElementById("cbxBigSquares").checked ? 50 : 30));
-	}
+	};
+
+	const onRender = () => {
+		last.Data = JSON.parse(localStorage.getItem("data"));
+		last.HasArmor = localStorage.getItem("has-armor") === "true";
+
+		localStorage.setItem("data", JSON.stringify(ns.Data));
+		localStorage.setItem("has-armor", ns.HasArmor ? "true" : "false");
+	};
 }) (window.GW.Minesweeper = window.GW.Minesweeper || {});
 
 window.addEventListener("load", () => {
@@ -550,8 +551,8 @@ window.addEventListener("load", () => {
 	GW.Minesweeper.Data = JSON.parse(localStorage.getItem("data"));
 	if(!GW.Minesweeper.Data) {
 		GW.Minesweeper.generateGameData(10, 10, 0.12);
-		localStorage.setItem("has-armor", "true");
 	}
+	GW.Minesweeper.HasArmor = localStorage.getItem("has-armor") === "true";
 	GW.Minesweeper.renderGame();
 });
 window.addEventListener("beforeunload", (event) => {});
