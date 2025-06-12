@@ -32,9 +32,9 @@ window.GW = window.GW || {};
 
 	/**
 	 * Sets up the game state
-	 * @param {number} numRows The number of field rows
-	 * @param {number} numCols The number of field columns
-	 * @param {number} mineRate Percentage of squares to have mines
+	 * @param {Number} numRows The number of field rows
+	 * @param {Number} numCols The number of field columns
+	 * @param {Number} mineRate Percentage of squares to have mines
 	 */
 	ns.generateGameData = function generateGameData(numRows, numCols, mineRate) {
 		ns.Data = [];
@@ -147,7 +147,7 @@ window.GW = window.GW || {};
 	 * Renders the minefield
 	 */
 	ns.renderGame = function renderGame() {
-		last.Data = [];
+		Last.Data = [];
 		localStorage.removeItem("data");
 
 		const tbodyField = document.getElementById("tbodyField");
@@ -195,7 +195,7 @@ window.GW = window.GW || {};
 	ns.focusFieldSquare = function focusFieldSquare(tdFocus) {
 		const tblField = document.getElementById("tblField");
 		tblField.querySelectorAll("button, .dug-square").forEach(
-			elem => elem.setAttribute("tabindex", elem.parentElement.parentElement === tdFocus ? "0" : "-1")
+			elem => elem.setAttribute("tabindex", getTdParent(elem) === tdFocus ? "0" : "-1")
 		);
 		const [_, row, col] = tdFocus.id.split("-");
 		tblField.setAttribute("data-row", row);
@@ -267,26 +267,11 @@ window.GW = window.GW || {};
 	}
 
 	/**
-	 * @param {HTMLElement} elem child element
-	 * @returns Nearest <td> ancestor
-	 */
-	function getTdParent(elem) {
-		let tdEl = elem;
-		while(tdEl.tagName !== "TD") {
-			tdEl = tdEl.parentElement;
-		}
-		return tdEl;
-	}
-
-	/**
 	 * Handles the user activating a square
 	 * @param {Event} event 
 	 */
 	ns.onSquareActivate = (event) => {
-		let tdEl = event.target;
-		while(tdEl.tagName !== "TD") {
-			tdEl = tdEl.parentElement;
-		}
+		let tdEl = getTdParent(event.target);
 		const [_, row, col] = tdEl.id.split("-");
 		const action = getCurAction();
 
@@ -308,10 +293,7 @@ window.GW = window.GW || {};
 	 * @param {Event} event context menu event
 	 */
 	ns.batchReveal = (event) => {
-		let tdEl = event.target;
-		while(tdEl.tagName !== "TD") {
-			tdEl = tdEl.parentElement;
-		}
+		let tdEl = getTdParent(event.target);
 		const [_, row, col] = tdEl.id.split("-").map(item => parseInt(item));
 		SURROUNDING_DELTAS.forEach(deltas => {
 			const coords = {Row: row + deltas[0], Col: col + deltas[1] };
@@ -327,9 +309,21 @@ window.GW = window.GW || {};
 	};
 
 	/**
+	 * @param {HTMLElement} elem child element
+	 * @returns Nearest <td> ancestor
+	 */
+	function getTdParent(elem) {
+		let tdEl = elem;
+		while(tdEl.tagName !== "TD") {
+			tdEl = tdEl.parentElement;
+		}
+		return tdEl;
+	}
+
+	/**
 	 * Auto-reveals surrounding squares as appropriate
-	 * @param {number} row Starting square's row
-	 * @param {number} col Starting square's col
+	 * @param {Number} row Starting square's row
+	 * @param {Number} col Starting square's col
 	 */
 	function digAround(row, col) {
 		if(ns.HasArmor === true) {
@@ -358,8 +352,8 @@ window.GW = window.GW || {};
 
 	/**
 	 * Removes a mine from a square if one exists
-	 * @param {number} row Square to diffuse's row
-	 * @param {number} col Square to diffuse's column
+	 * @param {Number} row Square to diffuse's row
+	 * @param {Number} col Square to diffuse's column
 	 */
 	function diffuseSquare(row, col) {
 		if(!ns.Data[row] || !ns.Data[row][col] || ns.Data[row][col].Cnt !== -1) {
@@ -458,7 +452,7 @@ window.GW = window.GW || {};
 		});
 	};
 
-	const last = new Proxy({Data: [], HasArmor: false}, {
+	const Last = new Proxy({Data: [], HasArmor: false}, {
 		set(_target, property, value, _receiver) {
 			switch(property) {
 				case "Data":
@@ -482,12 +476,12 @@ window.GW = window.GW || {};
 	 * Undoes the last action
 	 */
 	ns.undo = () => {
-		if(!last.Data || !last.Data.length) {
+		if(!Last.Data || !Last.Data.length) {
 			return;
 		}
 
-		ns.Data = last.Data;
-		ns.HasArmor = last.HasArmor;
+		ns.Data = Last.Data;
+		ns.HasArmor = Last.HasArmor;
 		ns.renderGame();
 	};
 
@@ -513,8 +507,8 @@ window.GW = window.GW || {};
 	};
 
 	const onRender = () => {
-		last.Data = JSON.parse(localStorage.getItem("data"));
-		last.HasArmor = localStorage.getItem("has-armor") === "true";
+		Last.Data = JSON.parse(localStorage.getItem("data"));
+		Last.HasArmor = localStorage.getItem("has-armor") === "true";
 
 		localStorage.setItem("data", JSON.stringify(ns.Data));
 		localStorage.setItem("has-armor", ns.HasArmor ? "true" : "false");
