@@ -85,7 +85,8 @@ window.GW = window.GW || {};
 
 		#Listeners = new Map();
 		
-		IntervalMs = 0;
+		IntervalMs = 0; // Action delay in milliseconds
+		RequireLull = true; // Whether batches wait an interval of no new actions to flush
 		#FlushTimer = null;
 		#IsBlocked = false;
 
@@ -93,11 +94,15 @@ window.GW = window.GW || {};
 		 * Creates an ActionBatcher
 		 * @param {String} name The batcher's identifier
 		 * @param {Number} intervalMs Action delay in milliseconds
+		 * @param {Boolean} requireLull Whether batches wait an interval of no new actions to flush (default true)
 		 */
-		constructor(name, intervalMs) {
+		constructor(name, intervalMs, requireLull) {
 			ActionBatcher.#InstanceCount++;
 			this.Name = `ActionBatcher-${ActionBatcher.#InstanceCount}-${name || ""}`;
 			this.IntervalMs = intervalMs || 0;
+			if(requireLull !== undefined) {
+				this.RequireLull = requireLull;
+			}
 		}
 
 		/**
@@ -130,8 +135,15 @@ window.GW = window.GW || {};
 
 		#startFlushTimer() {
 			if(this.#FlushTimer) {
-				clearTimeout(this.#FlushTimer);
-				this.#FlushTimer = null;
+				if(this.RequireLull) {
+					clearTimeout(this.#FlushTimer);
+					this.#FlushTimer = null;
+					this.#log(`Restarting ${this.IntervalMs}ms flush timer`);
+				}
+				else {
+					this.#log(`Deferring for running timer`);
+					return;
+				}
 			}
 			else {
 				this.#log(`Starting ${this.IntervalMs}ms flush timer`);
