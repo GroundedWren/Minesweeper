@@ -85,8 +85,8 @@ window.GW = window.GW || {};
 
 		#Listeners = new Map();
 		
-		#IntervalMs = 0;
-		#FlushTimerRunning = false;
+		IntervalMs = 0;
+		#FlushTimer = null;
 		#IsBlocked = false;
 
 		/**
@@ -97,7 +97,7 @@ window.GW = window.GW || {};
 		constructor(name, intervalMs) {
 			ActionBatcher.#InstanceCount++;
 			this.Name = `ActionBatcher-${ActionBatcher.#InstanceCount}-${name || ""}`;
-			this.#IntervalMs = intervalMs || 0;
+			this.IntervalMs = intervalMs || 0;
 		}
 
 		/**
@@ -129,14 +129,16 @@ window.GW = window.GW || {};
 		}
 
 		#startFlushTimer() {
-			if(this.#FlushTimerRunning) {
-				return;
+			if(this.#FlushTimer) {
+				clearTimeout(this.#FlushTimer);
+				this.#FlushTimer = null;
+			}
+			else {
+				this.#log(`Starting ${this.IntervalMs}ms flush timer`);
 			}
 
-			this.#log(`Starting ${this.#IntervalMs}ms flush timer`);
-			this.#FlushTimerRunning = true;
-			setTimeout(() => {
-				this.#FlushTimerRunning = false;
+			this.#FlushTimer = setTimeout(() => {
+				this.#FlushTimer = null;
 				if(this.#IsBlocked) {
 					this.#log(`Flush timer complete, but was blocked`);
 				}
@@ -144,7 +146,7 @@ window.GW = window.GW || {};
 					this.#log(`Flush timer complete, not blocked`);
 					this.#flushBatch();
 				}
-			}, 0);
+			}, this.IntervalMs);
 		}
 
 		#flushBatch() {
