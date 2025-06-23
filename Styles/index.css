@@ -210,18 +210,28 @@ gw-switch {
 	}
 
 	button {
-		
+		--bcs: var(--sqr-border-color-start);
+		--bce: var(--sqr-border-color-end);
+
 		border: 2.5px solid;
-		border-block-start-color: var(--sqr-border-color-start);
-		border-inline-start-color: var(--sqr-border-color-start);
-		border-block-end-color: var(--sqr-border-color-end);
-		border-inline-end-color: var(--sqr-border-color-end);
+		border-block-start-color: var(--bcs);
+		border-inline-start-color: var(--bcs);
+		border-block-end-color: var(--bce);
+		border-inline-end-color: var(--bce);
 
 		&[aria-pressed="true"] {
-			border-block-start-color: var(--sqr-border-selected-color-start);
-			border-inline-start-color: var(--sqr-border-selected-color-start);
-			border-block-end-color: var(--sqr-border-selected-color-end);
-			border-inline-end-color: var(--sqr-border-selected-color-end);
+			--bcs: var(--sqr-border-selected-color-start);
+			--bce: var(--sqr-border-selected-color-end);
+
+			&:active {
+				--bcs: var(--sqr-border-selected-color-end);
+				--bce: var(--sqr-border-selected-color-start);
+			}
+		}
+
+		&:active {
+			--bcs: var(--sqr-border-color-end);
+			--bce: var(--sqr-border-color-start);
 		}
 
 		.dig-indicator, .flag-indicator, .q-indicator {

@@ -235,17 +235,36 @@ details[open] summary {
 }
 
 button, input:is([type="button"], [type="submit"], [type="reset"]), input[type="file"]::file-selector-button, select, summary {
+	--border-start-color: color-mix(in oklab, var(--link-color), #FFFFFF 30%);
+	--border-end-color: color-mix(in oklab, var(--link-color), #000000 20%);
+
 	background-color: var(--button-face-color);
 	color: var(--button-text-color);
-	border: 1px solid var(--link-color);
+	
+	border: 2.5px solid;
+	border-block-start-color: var(--border-start-color);
+	border-inline-start-color: var(--border-start-color);
+	border-block-end-color: var(--border-end-color);
+	border-inline-end-color: var(--border-end-color);
+
 	cursor: pointer;
 	min-width: 30px;
 	min-height: 30px;
+
+	&:not([data-sts]) {
+		&:hover {
+			background-color: color-mix(in oklab, var(--button-face-color), var(--selected-color) 35%);
+		}
+		&:active, &:open {
+			background-color: color-mix(in oklab, var(--button-face-color), var(--selected-color) 65%);
+			--border-start-color: color-mix(in oklab, var(--link-color), #000000 20%);
+			--border-end-color: color-mix(in oklab, var(--link-color), #FFFFFF 30%);
+		}
+	}
 }
 
 button[aria-expanded="true"], button[aria-pressed="true"], details[open] summary {
 	background-color: var(--selected-color);
-	box-shadow: 0px 0px 3px 1px var(--link-color) inset;
 }
 
 :is(button, select, input:is([type="button"], [type="submit"], [type="reset"]))[disabled], input[type="file"][disabled]::file-selector-button {
