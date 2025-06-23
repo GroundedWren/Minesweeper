@@ -6,6 +6,13 @@ File Description: Index.html styles
 
 html {
 	height: 100vh;
+
+	&.big-squares {
+		--square-size: 40px;
+	}
+	&.show-gridlines {
+		--gridline-size: 0.9px;
+	}
 }
 
 body {
@@ -17,14 +24,6 @@ body {
 
 	display: flex;
 	flex-direction: column;
-}
-
-body:has(#cbxBigSquares:checked) {
-	--square-size: 40px;
-}
-
-body:has(#cbxShowGridlines:checked) {
-	--gridline-size: 0.9px;
 }
 
 #mainHeaderRight {
@@ -162,10 +161,6 @@ gw-switch {
 
 	border: 1px solid var(--border-color);
 
-	* {
-		outline-width: 2.5px !important;
-	}
-
 	td {
 		padding: 0;
 		border: 0;
@@ -173,10 +168,6 @@ gw-switch {
 
 	gw-mine-square {
 		contain: strict;
-	}
-
-	.dig-indicator, .flag-indicator, .q-indicator {
-		display: none;
 	}
 
 	button[data-sts="null"]:is(:focus-within, :hover) {
@@ -204,6 +195,8 @@ gw-switch {
 	}
 
 	button, .dug-square {
+		outline-width: 2.5px !important;
+
 		aspect-ratio: 1 / 1;
 		width: var(--square-size, 30px);
 		height: var(--square-size, 30px);
@@ -217,6 +210,7 @@ gw-switch {
 	}
 
 	button {
+		
 		border: 2.5px solid;
 		border-block-start-color: var(--sqr-border-color-start);
 		border-inline-start-color: var(--sqr-border-color-start);
@@ -228,6 +222,10 @@ gw-switch {
 			border-inline-start-color: var(--sqr-border-selected-color-start);
 			border-block-end-color: var(--sqr-border-selected-color-end);
 			border-inline-end-color: var(--sqr-border-selected-color-end);
+		}
+
+		.dig-indicator, .flag-indicator, .q-indicator {
+			display: none;
 		}
 	}
 

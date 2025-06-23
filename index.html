@@ -45,21 +45,21 @@
 					<label class="text-after">
 						<gw-switch><input id="cbxDarkMode"
 							type="checkbox"
-							oninput="localStorage.setItem('theme', event.target.checked ? 'dark' : 'light')"
+							oninput="localStorage.setItem('theme', event.target.checked ? 'dark' : 'light');GW.Minesweeper.updatePrefs();"
 						></gw-switch>
 						Dark mode
 					</label>
 					<label class="text-after">
 						<gw-switch><input id="cbxBigSquares"
 							type="checkbox"
-							oninput="localStorage.setItem('use-big-squares', event.target.checked ? 'true' : 'false')"
+							oninput="localStorage.setItem('use-big-squares', event.target.checked ? 'true' : 'false');GW.Minesweeper.updatePrefs();"
 						></gw-switch>
 						Big squares
 					</label>
 					<label class="text-after">
 						<gw-switch><input id="cbxShowGridlines"
 							type="checkbox"
-							oninput="localStorage.setItem('show-gridlines', event.target.checked ? 'true' : 'false')"
+							oninput="localStorage.setItem('show-gridlines', event.target.checked ? 'true' : 'false');GW.Minesweeper.updatePrefs();"
 						></gw-switch>
 						Show gridlines
 					</label>

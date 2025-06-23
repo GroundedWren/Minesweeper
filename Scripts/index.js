@@ -513,25 +513,35 @@ window.GW = window.GW || {};
 		localStorage.setItem("data", JSON.stringify(ns.Data));
 		localStorage.setItem("has-armor", ns.HasArmor ? "true" : "false");
 	};
+
+	ns.updatePrefs = () => {
+		const cbxDarkMode = document.getElementById("cbxDarkMode");
+		const theme = localStorage.getItem("theme");
+		switch(theme) {
+			case "light":
+				cbxDarkMode.checked = false;
+				break;
+			case "dark":
+				cbxDarkMode.checked = true;
+				break;
+			default:
+				cbxDarkMode.checked = window.matchMedia("(prefers-color-scheme: dark)").matches;
+				break;
+		}
+		document.documentElement.classList.toggle("theme-dark", cbxDarkMode.checked);
+
+		const cbxBigSquares = document.getElementById("cbxBigSquares");
+		cbxBigSquares.checked = localStorage.getItem("use-big-squares") === "true";
+		document.documentElement.classList.toggle("big-squares", cbxBigSquares.checked);
+
+		const cbxShowGridlines = document.getElementById("cbxShowGridlines");
+		cbxShowGridlines.checked = localStorage.getItem("show-gridlines") === "true";
+		document.documentElement.classList.toggle("show-gridlines", cbxBigSquares.checked);
+	};
 }) (window.GW.Minesweeper = window.GW.Minesweeper || {});
 
 window.addEventListener("load", () => {
-	const cbxDarkMode = document.getElementById("cbxDarkMode");
-	const theme = localStorage.getItem("theme");
-	switch(theme) {
-		case "light":
-			cbxDarkMode.checked = false;
-			break;
-		case "dark":
-			cbxDarkMode.checked = true;
-			break;
-		default:
-			cbxDarkMode.checked = window.matchMedia("(prefers-color-scheme: dark)").matches;
-			break;
-	}
-	
-	document.getElementById("cbxBigSquares").checked = localStorage.getItem("use-big-squares") === "true";
-	document.getElementById("cbxShowGridlines").checked = localStorage.getItem("show-gridlines") === "true";
+	GW.Minesweeper.updatePrefs();
 
 	const ngSize = JSON.parse(localStorage.getItem("new-game-size")) || {
 		Rows: 10,
