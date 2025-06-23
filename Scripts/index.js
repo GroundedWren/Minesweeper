@@ -536,7 +536,7 @@ window.GW = window.GW || {};
 
 		const cbxShowGridlines = document.getElementById("cbxShowGridlines");
 		cbxShowGridlines.checked = localStorage.getItem("show-gridlines") === "true";
-		document.documentElement.classList.toggle("show-gridlines", cbxBigSquares.checked);
+		document.documentElement.classList.toggle("show-gridlines", cbxShowGridlines.checked);
 	};
 }) (window.GW.Minesweeper = window.GW.Minesweeper || {});
 
