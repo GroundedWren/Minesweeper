@@ -120,7 +120,8 @@ gw-switch {
 	padding-inline: 5px;
 
 	outline: none !important;
-	z-index: 0 !important;
+
+	contain: content;
 }
 
 #divFieldFooter {
