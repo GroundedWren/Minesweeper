@@ -8,6 +8,7 @@ window.GW = window.GW || {};
 	const SURROUNDING_DELTAS = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 	ns.Data = [];
 	ns.HasArmor = true;
+	ns.DisableSave = false;
 
 	/**
 	 * Creates and renders a new game
@@ -21,6 +22,7 @@ window.GW = window.GW || {};
 			Columns: elements["numCols"].value,
 			MineRate: elements["numMineRate"].value,
 		};
+		ns.applyGameSizeLimitations(ngSize);
 		localStorage.setItem("new-game-size", JSON.stringify(ngSize));
 
 		ns.generateGameData(ngSize.Rows, ngSize.Columns, ngSize.MineRate / 100.0);
@@ -29,6 +31,20 @@ window.GW = window.GW || {};
 		ns.renderGame();
 		ns.selectMode("dig");
 	}
+
+	/**
+	 * Restricts game functionality based on minefield size
+	 * @param {Object} ngSize Game dimensions
+	 */
+	ns.applyGameSizeLimitations = function applyGameSizeLimitations(ngSize) {
+		if(ngSize.Rows*ngSize.Columns > 10000) {
+			alert("Big game you have there! Browser saving and undo functionality are disabled. 10K is the recommended maximum.");
+			ns.DisableSave = true;
+		}
+		else {
+			ns.DisableSave = false;
+		}
+	} 
 
 	/**
 	 * Sets up the game state
@@ -507,10 +523,13 @@ window.GW = window.GW || {};
 	};
 
 	const onRender = () => {
-		Last.Data = JSON.parse(localStorage.getItem("data"));
-		Last.HasArmor = localStorage.getItem("has-armor") === "true";
+		if(!ns.DisableSave) {
+			Last.Data = JSON.parse(localStorage.getItem("data"));
+			Last.HasArmor = localStorage.getItem("has-armor") === "true";
 
-		localStorage.setItem("data", JSON.stringify(ns.Data));
+			localStorage.setItem("data", JSON.stringify(ns.Data));
+		}
+
 		localStorage.setItem("has-armor", ns.HasArmor ? "true" : "false");
 	};
 
@@ -543,19 +562,26 @@ window.GW = window.GW || {};
 window.addEventListener("load", () => {
 	GW.Minesweeper.updatePrefs();
 
-	const ngSize = JSON.parse(localStorage.getItem("new-game-size")) || {
-		Rows: 10,
-		Columns: 10,
-		MineRate: 12,
-	};
+	let ngSize;
+	GW.Minesweeper.Data = JSON.parse(localStorage.getItem("data"));
+	if(!GW.Minesweeper.Data) {
+		GW.Minesweeper.generateGameData(10, 10, 0.12);
+		ngSize = {
+			Rows: 10,
+			Columns: 10,
+			MineRate: 12,
+		}
+		localStorage.setItem("new-game-size", JSON.stringify(ngSize));
+	}
+	else {
+		ngSize = JSON.parse(localStorage.getItem("new-game-size"));
+	}
 	document.getElementById("numRows").value = ngSize.Rows;
 	document.getElementById("numCols").value = ngSize.Columns;
 	document.getElementById("numMineRate").value = ngSize.MineRate;
 
-	GW.Minesweeper.Data = JSON.parse(localStorage.getItem("data"));
-	if(!GW.Minesweeper.Data) {
-		GW.Minesweeper.generateGameData(10, 10, 0.12);
-	}
+	GW.Minesweeper.applyGameSizeLimitations(ngSize);
+
 	GW.Minesweeper.HasArmor = localStorage.getItem("has-armor") === "true";
 	GW.Minesweeper.renderGame();
 });
