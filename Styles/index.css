@@ -150,7 +150,7 @@ gw-switch {
 		bottom: 0;
 
 		.scroll-btn {
-			display: block;
+			display: flex;
 		}
 	}
 }
@@ -365,6 +365,7 @@ dialog {
 
 #diaInfo > article {
 	max-width: 900px;
+	padding-block-end: 0px;
 
 	display: grid;
 	grid-template-columns: 30px 1fr;
