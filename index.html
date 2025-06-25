@@ -91,7 +91,11 @@
 					<gw-icon iconKey="circle-question" name="Unknown"></gw-icon>
 				</label>
 			</fieldset>
-			<gw-shortcuts id="shortsField" role="application" aria-describedby="asiTblField"
+			<gw-shortcuts id="shortsField"
+				role="application"
+				aria-labelledby="spnShortcutsLabel"
+				aria-describedby="asiTblField"
+				
 				code_0="ArrowRight"
 				handler_0="GW.Minesweeper.tblFieldOnKbdNav(event)"
 				info_0="Move right a column"
@@ -177,6 +181,7 @@
 					<span class="sr-only">in focus mode</span>
 					<span>(<kbd>Alt</kbd>+<kbd>S</kbd>)</span>
 				</aside>
+				<span id="spnShortcutsLabel" class="hidden">Shortcuts</span>
 				<span id="spnCellLabel" class="hidden">Cell</span>
 				<span id="spnSquareDigLabel" class="hidden">Dig square</span>
 				<span id="spnSquareFlagLabel" class="hidden">Flag as mine</span>

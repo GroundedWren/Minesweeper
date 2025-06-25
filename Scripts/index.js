@@ -504,14 +504,17 @@ window.GW = window.GW || {};
 	/**
 	 * Digs all squares
 	 */
-	ns.revealBoard = () => {
+	ns.revealBoard = async () => {
 		for(let i = 0; i < ns.Data.length; i++) {
 			for(let j = 0; j < ns.Data[i].length; j++) {
 				ns.Data[i][j].Sts = "dig";
 			}
 		}
+		await ns.MineSquareEl.ActionBatcher.BatchPromise;
+		
+		getActiveSquare().querySelector(`.dug-square`).setAttribute("tabindex", "0");
 
-		setTimeout(() => GW.Controls.Toaster.showToast("Board revealed!", {invisible: true}), 0);
+		GW.Controls.Toaster.showToast("Board revealed!", {invisible: true});
 	};
 
 	/**
