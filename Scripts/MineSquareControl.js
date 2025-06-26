@@ -141,6 +141,7 @@ window.GW = window.GW || {};
 
 			this.setAttribute("aria-labelledby", MineSquareEl.getCellLabelledBy(data));
 			this.innerHTML = MineSquareEl.getCellContent(data);
+			this.#setupInOutListeners();
 
 			if(hadFocus) {
 				ns.focusFieldSquare(this.parentElement);
@@ -151,7 +152,7 @@ window.GW = window.GW || {};
 			const myBtn = this.querySelector(`button`);
 
 			this.removeEventListener("mouseover", this.#onInOut);
-			this.removeEventListener("mouseOut", this.#onInOut);
+			this.removeEventListener("mouseout", this.#onInOut);
 			myBtn?.removeEventListener("focus", this.#onInOut);
 			myBtn?.removeEventListener("blur", this.#onInOut);
 
