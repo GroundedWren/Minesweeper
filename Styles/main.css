@@ -302,7 +302,7 @@ mark {
 
 form {
 	button[type="submit"], button:not([type="reset"], [type="button"]), input[type="submit"] {
-		border-width: 2px;
+		border-width: 3px;
 		font-weight: bold;
 	}
 }
