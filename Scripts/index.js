@@ -280,6 +280,8 @@ window.GW = window.GW || {};
 			}
 
 		}
+
+		return death;
 	}
 
 	/**
@@ -320,6 +322,13 @@ window.GW = window.GW || {};
 				digAround(coords.Row, coords.Col);
 			}
 		});
+
+		const didExplode = updateFace();
+
+		GW.Controls.Toaster.showToast(
+			`Dug around, ${didExplode ? "mine exploded. Boom." : "No mines exploded"}`
+			, {invisible: true}
+		);
 
 		event.preventDefault();
 	};
@@ -499,6 +508,7 @@ window.GW = window.GW || {};
 		ns.Data = Last.Data;
 		ns.HasArmor = Last.HasArmor;
 		ns.renderGame();
+		setTimeout(() => GW.Controls.Toaster.showToast("Action undone", {invisible: true}), 0);
 	};
 
 	/**

@@ -162,11 +162,11 @@
 
 				oncontextmenu="GW.Minesweeper.cycleMode(event)"
 			>
-				<span id="spnDataGrid" class="hidden">Data Grid.</span>
 				<div id="scrollMinefield" class="scroll-container" tabindex="-1">
 					<table id="tblField"
-						aria-labelledby="spnFieldLabel spnDataGrid"
+						aria-labelledby="spnFieldLabel"
 						role="grid"
+						aria-roledescription="Data Grid"
 						tabindex="0"
 						onfocusin="GW.Minesweeper.tblFieldOnFocusIn(event)"
 						onfocusout="GW.Minesweeper.tblFieldOnFocusOut(event)"
