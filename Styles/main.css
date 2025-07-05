@@ -161,7 +161,7 @@ nav.breadcrumb {
 		justify-self: flex-end;
 	}
 }
-@media (max-width: 450px) {
+@media (max-width: 650px) {
 	#mainHeader {
 		grid-template-columns: 1fr !important;
 		justify-items: center;
