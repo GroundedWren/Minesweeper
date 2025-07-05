@@ -15,6 +15,18 @@ html {
 	}
 }
 
+h1 {
+	width: fit-content;
+	background-color: var(--accent-color);
+	border-radius: 20px;
+	padding: 4px;
+}
+
+#mainHeader div:has(h1) {
+	display: flex;
+	justify-content: center;
+}
+
 body {
 	min-height: 100vh;
 	height: 100%;
