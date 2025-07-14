@@ -325,7 +325,7 @@ form, article {
 
 			&:has(:focus-visible) {
 				> span {
-					background-color: var(--selected-color);
+					background-color: var(--mark-color);
 				}
 				input {
 					outline-width: 2px !important;
